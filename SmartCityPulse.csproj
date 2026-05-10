@@ -16,4 +16,12 @@
     <PackageReference Include="QuestPDF" Version="2026.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Hubs\" />
+    <Folder Include="Services\" />
+    <Folder Include="Views\Incident\" />
+    <Folder Include="Views\Auth\" />
+    <Folder Include="Views\Analytics\" />
+  </ItemGroup>
+
 </Project>

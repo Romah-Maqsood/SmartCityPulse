@@ -39,7 +39,7 @@ app.UseAuthorization();
 app.UseSession();
 app.UseRouting();
 
-app.MapHub<SmartCityPulse.Hubs.CityHub>("/cityHub");
+//app.MapHub<SmartCityPulse.Hubs.CityHub>("/cityHub");
 
 
 app.MapControllerRoute(
