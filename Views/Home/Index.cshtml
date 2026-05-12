@@ -1,8 +1,406 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = null;
+    ViewData["Title"] = "Smart Civic Alert System";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0F172A;
+            color: #FFFFFF;
+            line-height: 1.5;
+        }
+
+        .navbar {
+            background-color: #1E293B;
+            border-bottom: 2px solid #3B82F6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .navbar-brand {
+            color: #FFFFFF;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .navbar-brand span {
+                color: #3B82F6;
+            }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+            .nav-links a {
+                color: #94A3B8;
+                text-decoration: none;
+            }
+
+                .nav-links a:hover {
+                    color: #3B82F6;
+                }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            border-radius: 24px;
+            margin-bottom: 4rem;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #3B82F6, #22D3EE);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.125rem;
+            color: #94A3B8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+            .btn-primary:hover {
+                background-color: #2563EB;
+            }
+
+        .btn-outline-primary {
+            background-color: transparent;
+            border: 1px solid #3B82F6;
+            color: #3B82F6;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #3B82F6;
+                color: white;
+            }
+
+        .btn-lg {
+            padding: 0.875rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .feature-card {
+            background-color: #1E293B;
+            border: 2px solid #334155;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+            .feature-card:hover {
+                transform: translateY(-4px);
+                border-color: #3B82F6;
+            }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            color: white;
+        }
+
+        .feature-card p {
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+        }
+
+        .step {
+            flex: 1;
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            position: relative;
+            min-width: 150px;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: #3B82F6;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .step-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .step h4 {
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            color: #94A3B8;
+            font-size: 0.75rem;
+        }
+
+        .step-arrow {
+            color: #3B82F6;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #3B82F6;
+        }
+
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+            padding: 3rem;
+            border-radius: 24px;
+            border: 1px solid #334155;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+            .cta-section h2 {
+                color: white;
+                margin-bottom: 1rem;
+            }
+
+            .cta-section p {
+                color: #94A3B8;
+                margin-bottom: 1.5rem;
+            }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #64748B;
+            border-top: 1px solid #334155;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">🔥 SMART CIVIC <span>ALERT</span></a>
+        <div class="nav-links">
+            <a href="/Home/Index">Home</a>
+            <a href="/Home/Privacy">Privacy</a>
+            <a href="/Account/Login">Login</a>
+            <a href="/Home/ReportIncident">Report</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero-section">
+            <h1 class="hero-title">
+                <span class="gradient-text">Smart Civic</span><br />
+                Alert System
+            </h1>
+            <p class="hero-subtitle">
+                AI-powered city incident management system. Report problems instantly,
+                get real-time updates, and let AI route incidents to the right department.
+            </p>
+            <div class="hero-buttons">
+                <a href="/Home/ReportIncident" class="btn btn-primary btn-lg">🚨 Report Incident</a>
+                <a href="/Account/Login" class="btn btn-outline-primary btn-lg">🔐 Login</a>
+            </div>
+        </div>
+
+        <h2 class="section-title">Why Choose Smart Civic Alert?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3>AI Severity Predictor</h3>
+                <p>AI automatically detects incident severity from description.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Real-time Routing</h3>
+                <p>Incidents auto-routed to Fire, Police, or Rescue departments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3>Live Map Tracking</h3>
+                <p>Track incidents on map with color-coded severity markers.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💬</div>
+                <h3>AI Chatbot Assistant</h3>
+                <p>Ask about incident status anytime.</p>
+            </div>
+        </div>
+
+        <h2 class="section-title">How It Works</h2>
+        <div class="steps-container">
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-icon">📝</div>
+                <h4>Report Issue</h4>
+                <p>Citizen reports incident via web form</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-icon">🤖</div>
+                <h4>AI Analysis</h4>
+                <p>AI predicts severity and routes</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-icon">🚒</div>
+                <h4>Department Response</h4>
+                <p>Operator accepts and updates status</p>
+            </div>
+            <div class="step-arrow">→</div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-icon">✅</div>
+                <h4>Issue Resolved</h4>
+                <p>Status updated, citizen notified</p>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">24/7</div>
+                <div class="stat-label">Reporting Available</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">AI Powered</div>
+                <div class="stat-label">Severity Detection</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">Real-time</div>
+                <div class="stat-label">Notifications</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">3+</div>
+                <div class="stat-label">Departments</div>
+            </div>
+        </div>
+
+        <div class="cta-section">
+            <h2>Ready to Report an Incident?</h2>
+            <p>Join thousands of citizens using Smart Civic Alert to keep their city safe.</p>
+            <a href="/Home/ReportIncident" class="btn btn-primary btn-lg">🚨 Report Incident Now</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 Smart Civic Alert System - AI-Powered City Incident Management</p>
+    </footer>
+
+</body>
+</html>
