@@ -23,13 +23,13 @@ namespace SmartCityPulse.Models
 
         [BsonElement("longitude")]
         public double? Longitude { get; set; }
-
+        //to show severity
         [BsonElement("severity")]
         public string Severity { get; set; } = "Medium";
 
         [BsonElement("status")]
         public string Status { get; set; } = "Open";
-
+        //It tells the time case was reported
         [BsonElement("reportedAt")]
         public DateTime ReportedAt { get; set; } = DateTime.UtcNow;
 
