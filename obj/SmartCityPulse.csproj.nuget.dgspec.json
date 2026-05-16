@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Documents\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse.csproj": {}
+    "C:\\Users\\taqde\\source\\repos\\SmartCivicAlertSystem\\SmartCityPulse.csproj": {}
   },
   "projects": {
-    "D:\\Documents\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse.csproj": {
+    "C:\\Users\\taqde\\source\\repos\\SmartCivicAlertSystem\\SmartCityPulse.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Documents\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse.csproj",
+        "projectUniqueName": "C:\\Users\\taqde\\source\\repos\\SmartCivicAlertSystem\\SmartCityPulse.csproj",
         "projectName": "SmartCityPulse",
-        "projectPath": "D:\\Documents\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse.csproj",
-        "packagesPath": "C:\\Users\\ayesh\\.nuget\\packages\\",
-        "outputPath": "D:\\Documents\\SmartCityPulse\\SmartCityPulse\\SmartCityPulse\\obj\\",
+        "projectPath": "C:\\Users\\taqde\\source\\repos\\SmartCivicAlertSystem\\SmartCityPulse.csproj",
+        "packagesPath": "C:\\Users\\taqde\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\taqde\\source\\repos\\SmartCivicAlertSystem\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ayesh\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\taqde\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -44,7 +44,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -65,6 +65,10 @@
             "Microsoft.AspNetCore.SignalR": {
               "target": "Package",
               "version": "[1.2.9, )"
+            },
+            "Microsoft.Extensions.Logging.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.2, )"
             },
             "Microsoft.ML": {
               "target": "Package",
@@ -90,6 +94,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.26, 8.0.26]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.26, 8.0.26]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.26, 8.0.26]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.26, 8.0.26]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -98,7 +120,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.313/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.202/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

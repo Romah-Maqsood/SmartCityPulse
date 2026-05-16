@@ -271,23 +271,99 @@
             margin-top: 0.5rem;
         }
 
-        .cta-section {
+        /* FAQ Section */
+        .faq-section {
             background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
             padding: 3rem;
             border-radius: 24px;
             border: 1px solid #334155;
-            text-align: center;
             margin-bottom: 2rem;
         }
 
-            .cta-section h2 {
+            .faq-section h2 {
                 color: white;
-                margin-bottom: 1rem;
+                margin-bottom: 2rem;
+                text-align: center;
             }
 
-            .cta-section p {
-                color: #94A3B8;
-                margin-bottom: 1.5rem;
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+            .faq-item:hover {
+                border-color: #3B82F6;
+            }
+
+            .faq-item.active {
+                border-color: #3B82F6;
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.1);
+            }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.25rem 1.5rem;
+            background: none;
+            border: none;
+            color: #E2E8F0;
+            font-size: 1.05rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: left;
+            transition: color 0.3s ease;
+        }
+
+            .faq-question:hover {
+                color: #3B82F6;
+            }
+
+            .faq-question i {
+                color: #3B82F6;
+                font-size: 1.2rem;
+                transition: transform 0.3s ease;
+            }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            color: #94A3B8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            padding: 0 1.5rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 1.5rem 1.25rem 1.5rem;
+        }
+
+        .faq-answer a {
+            color: #3B82F6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .faq-answer a:hover {
+                text-decoration: underline;
             }
 
         .footer {
@@ -298,34 +374,35 @@
         }
 
         @@media (max-width: 768px) {
-            .feature-grid
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
 
-        {
-            grid-template-columns: 1fr;
-        }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
 
-        .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
+            .steps-container {
+                flex-direction: column;
+            }
 
-        .steps-container {
-            flex-direction: column;
-        }
+            .step-arrow {
+                transform: rotate(90deg);
+                justify-content: center;
+            }
 
-        .step-arrow {
-            transform: rotate(90deg);
-            justify-content: center;
-        }
+            .hero-title {
+                font-size: 2rem;
+            }
 
-        .hero-title {
-            font-size: 2rem;
-        }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
 
-        .hero-buttons {
-            flex-direction: column;
-            align-items: center;
-        }
-
+            .faq-section {
+                padding: 2rem 1rem;
+            }
         }
     </style>
 </head>
@@ -432,18 +509,63 @@
             </div>
         </div>
 
-        <div class="cta-section">
-            <h2>Ready to Report an Incident?</h2>
-            <p>Join thousands of citizens using Smart Civic Alert to keep their city safe.</p>
-            <a href="/Incident/Create" class="btn btn-primary btn-lg">
-                <i class="fas fa-exclamation-triangle"></i> Report Incident Now
-            </a>
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How do I report an incident?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can report an incident by clicking the <a href="/Incident/Create">"Report Incident"</a> button on this page. You don't need to log in first — simply fill out the form with details about the issue, and our AI will automatically route it to the correct department.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Do I need to create an account to report an issue?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>No, you can report incidents without creating an account. However, <a href="/Account/Register">registering</a> allows you to track your reported incidents, receive status updates, and view your reporting history. It only takes a minute!</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What happens after I submit a report?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Once you submit a report, our AI system analyzes the severity and category of the incident, then automatically routes it to the appropriate department (Fire, Police, or Rescue). The department operator reviews and updates the status, and if you're registered, you'll receive real-time notifications.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <footer class="footer">
         <p><i class="far fa-copyright"></i> 2026 Smart Civic Alert System - AI-Powered City Incident Management</p>
     </footer>
+
+    <script>
+        function toggleFAQ(button) {
+            const faqItem = button.parentElement;
+            const isActive = faqItem.classList.contains('active');
+
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Open clicked item if it wasn't already open
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
+        }
+    </script>
 
 </body>
 </html>
