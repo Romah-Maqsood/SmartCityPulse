@@ -1,0 +1,504 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Admin Dashboard - Smart Civic Alert";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0F172A;
+            color: #FFFFFF;
+        }
+
+        /* Main Container */
+        .admin-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar (25%) */
+        .sidebar {
+            width: 280px;
+            background-color: #1E293B;
+            border-right: 1px solid #334155;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+            .sidebar-header i {
+                font-size: 1.75rem;
+                color: #3B82F6;
+            }
+
+            .sidebar-header h2 {
+                font-size: 1.25rem;
+                color: white;
+            }
+
+            .sidebar-header span {
+                color: #3B82F6;
+            }
+
+        .nav-menu {
+            padding: 1.5rem 0;
+        }
+
+        .nav-item {
+            padding: 0.75rem 1.5rem;
+            margin: 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #94A3B8;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+            .nav-item:hover, .nav-item.active {
+                background-color: #334155;
+                color: #3B82F6;
+                border-left: 3px solid #3B82F6;
+            }
+
+            .nav-item i {
+                width: 24px;
+            }
+
+        /* Main Content (75%) */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 1.5rem;
+        }
+
+        /* Top Navbar */
+        .top-navbar {
+            background-color: #1E293B;
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border: 1px solid #334155;
+        }
+
+        .welcome-text h3 {
+            color: white;
+        }
+
+        .welcome-text p {
+            color: #94A3B8;
+            font-size: 0.875rem;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+        }
+
+        .user-name {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: #0F172A;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 8px;
+            width: 150px;
+            display: none;
+            z-index: 100;
+        }
+
+            .dropdown-menu.show {
+                display: block;
+            }
+
+            .dropdown-menu a {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1rem;
+                color: #94A3B8;
+                text-decoration: none;
+            }
+
+                .dropdown-menu a:hover {
+                    background-color: #334155;
+                    color: #3B82F6;
+                }
+
+        /* Stat Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin: 0.5rem 0;
+        }
+
+        .stat-trend-up {
+            color: #22C55E;
+            font-size: 0.75rem;
+        }
+
+        .stat-trend-down {
+            color: #EF4444;
+            font-size: 0.75rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+            .section-header h2 {
+                font-size: 1.25rem;
+            }
+
+        /* Tables */
+        .table-container {
+            background-color: #1E293B;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        th {
+            color: #94A3B8;
+            font-weight: 500;
+        }
+
+        .severity-critical {
+            color: #EF4444;
+            font-weight: bold;
+        }
+
+        .severity-high {
+            color: #F97316;
+            font-weight: bold;
+        }
+
+        .severity-medium {
+            color: #EAB308;
+            font-weight: bold;
+        }
+
+        .severity-low {
+            color: #22C55E;
+            font-weight: bold;
+        }
+
+        .status-open {
+            color: #3B82F6;
+        }
+
+        .status-progress {
+            color: #F59E0B;
+        }
+
+        .status-resolved {
+            color: #22C55E;
+        }
+
+        /* Critical Alerts */
+        .critical-alert {
+            background: linear-gradient(135deg, #7F1D1D 0%, #1E293B 100%);
+            border-left: 4px solid #EF4444;
+            border-radius: 12px;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: #3B82F6;
+            cursor: pointer;
+        }
+
+        /* Dynamic Content Area */
+        .dynamic-content {
+            display: none;
+        }
+
+            .dynamic-content.active {
+                display: block;
+            }
+
+        @@media (max-width: 768px) {
+            .sidebar
+
+        {
+            width: 100%;
+            position: relative;
+            height: auto;
+        }
+
+        .main-content {
+            margin-left: 0;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-city"></i>
+                <h2>SMART CIVIC <span>ALERT</span></h2>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-item active" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-page="incidents">
+                    <i class="fas fa-list"></i> Incidents
+                </a>
+                <a href="#" class="nav-item" data-page="operators">
+                    <i class="fas fa-users"></i> Operators
+                </a>
+                <a href="#" class="nav-item" data-page="analytics">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="#" class="nav-item" data-page="reports">
+                    <i class="fas fa-download"></i> Reports
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Top Navbar -->
+            <div class="top-navbar">
+                <div class="welcome-text">
+                    <h3>Welcome back, @ViewBag.UserName!</h3>
+                    <p>Here's what's happening with your city today.</p>
+                </div>
+                <div class="user-menu">
+                    <div class="user-name" onclick="toggleDropdown()">
+                        <i class="fas fa-user-circle"></i> Admin
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="#"><i class="fas fa-user"></i> Profile</a>
+                        <a href="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== DASHBOARD PAGE ==================== -->
+            <div id="dashboard-page" class="dynamic-content active">
+                <!-- Stats Cards -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value">@ViewBag.TotalToday</div>
+                        <div class="stat-label">Total Today</div>
+                        <div class="@(ViewBag.TotalTrend >= 0 ? "stat-trend-up" : "stat-trend-down")">
+                            <i class="fas @(ViewBag.TotalTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                            @Math.Abs(ViewBag.TotalTrend)% from yesterday
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">@ViewBag.ResolvedToday</div>
+                        <div class="stat-label">Resolved</div>
+                        <div class="@(ViewBag.ResolvedTrend >= 0 ? "stat-trend-up" : "stat-trend-down")">
+                            <i class="fas @(ViewBag.ResolvedTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i>
+                            @Math.Abs(ViewBag.ResolvedTrend)% from yesterday
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">@ViewBag.CriticalIncidents</div>
+                        <div class="stat-label">Critical</div>
+                        <div class="stat-trend-down">
+                            <i class="fas fa-arrow-down"></i> 2% from last week
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value">@ViewBag.PendingIncidents</div>
+                        <div class="stat-label">Pending</div>
+                        <div class="stat-trend-down">
+                            <i class="fas fa-arrow-down"></i> 10% from yesterday
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Incidents Table -->
+                <div class="section-header">
+                    <h2><i class="fas fa-history"></i> Recent Incidents</h2>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ID</th><th>Title</th><th>Department</th><th>Severity</th><th>Status</th><th>Time</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var incident in ViewBag.RecentIncidents)
+                            {
+                                <tr>
+                                    <td>@incident.Id</td>
+                                    <td>@incident.Title</td>
+                                    <td>@(incident.Department ?? "Unassigned")</td>
+                                    <td class="severity-@incident.Severity.ToLower()">@incident.Severity</td>
+                                    <td class="status-@incident.Status.ToLower().Replace(" ", "")">@incident.Status</td>
+                                    <td>@((DateTime.UtcNow - incident.ReportedAt).Minutes) min ago</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Critical Alerts -->
+                <div class="critical-alert">
+                    <div>
+                        <strong><i class="fas fa-exclamation-triangle"></i> CRITICAL ALERTS</strong><br>
+                        <span>@ViewBag.CriticalPending critical incidents require immediate attention.</span>
+                    </div>
+                    <a href="#" class="btn-link" data-page="incidents">Click to view →</a>
+                </div>
+            </div>
+
+            <!-- ==================== INCIDENTS PAGE (Placeholder) ==================== -->
+            <div id="incidents-page" class="dynamic-content">
+                <h2>All Incidents Management</h2>
+                <p>Incidents list with edit/delete options will appear here.</p>
+                <div class="table-container">
+                    <table>
+                        <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody><tr><td colspan="5">Loading incidents...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ==================== OPERATORS PAGE (Placeholder) ==================== -->
+            <div id="operators-page" class="dynamic-content">
+                <h2>Operators Management</h2>
+                <p>Add/Edit/Delete operators will appear here.</p>
+                <button class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px;">+ Add New Operator</button>
+            </div>
+
+            <!-- ==================== ANALYTICS PAGE (Placeholder) ==================== -->
+            <div id="analytics-page" class="dynamic-content">
+                <h2>Analytics Dashboard</h2>
+                <p>Charts and graphs will appear here.</p>
+            </div>
+
+            <!-- ==================== REPORTS PAGE (Placeholder) ==================== -->
+            <div id="reports-page" class="dynamic-content">
+                <h2>Reports Export</h2>
+                <p>PDF and CSV export options will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Dropdown toggle
+        function toggleDropdown() {
+            document.getElementById("dropdownMenu").classList.toggle("show");
+        }
+
+        // Close dropdown when clicking outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-name') && !event.target.closest('.user-name')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].classList.remove("show");
+                }
+            }
+        }
+
+        // Sidebar navigation
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                // Remove active class from all nav items
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+
+                // Hide all dynamic content
+                document.querySelectorAll('.dynamic-content').forEach(content => content.classList.remove('active'));
+
+                // Show selected content
+                const page = this.getAttribute('data-page');
+                document.getElementById(`${page}-page`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

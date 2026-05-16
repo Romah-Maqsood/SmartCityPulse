@@ -26,10 +26,51 @@
             align-items: center;
         }
 
+        /* Simple Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #1E293B;
+            border-bottom: 2px solid #3B82F6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: #FFFFFF;
+            font-size: 1.25rem;
+            font-weight: bold;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+            .navbar-brand i {
+                color: #3B82F6;
+            }
+
+            .navbar-brand span {
+                color: #3B82F6;
+            }
+
+        .nav-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
         .login-container {
             width: 100%;
             max-width: 450px;
             padding: 2rem;
+            margin-top: 80px;
         }
 
         .login-card {
@@ -45,35 +86,19 @@
             margin-bottom: 2rem;
         }
 
-            .logo h1 {
-                font-size: 1.75rem;
-                color: white;
-            }
-
-            .logo span {
-                color: #3B82F6;
-            }
-
             .logo i {
                 font-size: 3rem;
                 color: #3B82F6;
                 margin-bottom: 0.5rem;
             }
 
-        .login-title {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-            .login-title h2 {
+            .logo h2 {
                 color: white;
                 font-size: 1.5rem;
-                margin-bottom: 0.5rem;
             }
 
-            .login-title p {
-                color: #94A3B8;
-                font-size: 0.875rem;
+            .logo span {
+                color: #3B82F6;
             }
 
         .input-group {
@@ -87,72 +112,31 @@
                 margin-bottom: 0.5rem;
             }
 
-            .input-group .input-wrapper {
-                position: relative;
-            }
-
-                .input-group .input-wrapper i {
-                    position: absolute;
-                    left: 1rem;
-                    top: 50%;
-                    transform: translateY(-50%);
-                    color: #64748B;
-                }
-
-            .input-group input {
-                width: 100%;
-                padding: 0.75rem 1rem 0.75rem 2.5rem;
-                background-color: #0F172A;
-                border: 1px solid #334155;
-                border-radius: 12px;
-                color: white;
-                font-size: 1rem;
-                transition: all 0.2s ease;
-            }
-
-                .input-group input:focus {
-                    outline: none;
-                    border-color: #3B82F6;
-                    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-                }
-
-                .input-group input::placeholder {
-                    color: #64748B;
-                }
-
-        .remember-forgot {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+        .input-wrapper {
+            position: relative;
         }
 
-        .remember-me {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-            .remember-me input {
-                width: 16px;
-                height: 16px;
-                cursor: pointer;
+            .input-wrapper i {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #64748B;
             }
 
-            .remember-me label {
-                color: #94A3B8;
-                font-size: 0.875rem;
-                cursor: pointer;
-            }
-
-        .forgot-link {
-            color: #3B82F6;
-            text-decoration: none;
-            font-size: 0.875rem;
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            background-color: #0F172A;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
         }
 
-            .forgot-link:hover {
-                text-decoration: underline;
+            .input-group input:focus {
+                outline: none;
+                border-color: #3B82F6;
             }
 
         .btn-login {
@@ -165,8 +149,11 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
         }
 
             .btn-login:hover {
@@ -174,81 +161,75 @@
                 transform: translateY(-1px);
             }
 
+        .forgot-link {
+            text-align: right;
+            margin: 0.5rem 0 1.5rem;
+        }
+
+            .forgot-link a {
+                color: #3B82F6;
+                text-decoration: none;
+                font-size: 0.875rem;
+            }
+
         .register-link {
             text-align: center;
             color: #94A3B8;
             font-size: 0.875rem;
+            margin-top: 1.5rem;
         }
 
             .register-link a {
                 color: #3B82F6;
                 text-decoration: none;
-                font-weight: 500;
             }
 
-                .register-link a:hover {
-                    text-decoration: underline;
-                }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 1.5rem 0;
-            color: #64748B;
-            font-size: 0.875rem;
-        }
-
-            .divider::before,
-            .divider::after {
-                content: '';
-                flex: 1;
-                border-bottom: 1px solid #334155;
-            }
-
-            .divider::before {
-                margin-right: 1rem;
-            }
-
-            .divider::after {
-                margin-left: 1rem;
-            }
-
-        .demo-credentials {
-            background-color: #0F172A;
+        .alert-error {
+            background-color: #7F1D1D;
+            color: #FECACA;
+            padding: 0.75rem;
             border-radius: 12px;
-            padding: 1rem;
-            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #EF4444;
         }
 
-            .demo-credentials p {
-                color: #94A3B8;
-                font-size: 0.75rem;
-                margin-bottom: 0.5rem;
-            }
-
-            .demo-credentials code {
-                display: block;
-                color: #22D3EE;
-                font-size: 0.7rem;
-                background-color: #1E293B;
-                padding: 0.5rem;
-                border-radius: 8px;
-            }
+        .alert-success {
+            background-color: #14532D;
+            color: #BBF7D0;
+            padding: 0.75rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #22C55E;
+        }
     </style>
 </head>
 <body>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">
+            <i class="fas fa-city"></i> SMART CIVIC <span>ALERT</span>
+        </a>
+        <div class="nav-links">
+            <a href="/Account/Register"><i class="fas fa-user-plus"></i> Register</a>
+        </div>
+    </nav>
+
     <div class="login-container">
         <div class="login-card">
             <div class="logo">
                 <i class="fas fa-city"></i>
-                <h1>SMART CIVIC <span>ALERT</span></h1>
+                <h2>Welcome <span>Back!</span></h2>
             </div>
 
-            <div class="login-title">
-                <h2>Welcome Back!</h2>
-                <p>Sign in to your account to continue</p>
-            </div>
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert-success">@TempData["SuccessMessage"]</div>
+            }
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert-error">@ViewBag.Error</div>
+            }
 
             <form method="post" action="/Account/Login">
                 <div class="input-group">
@@ -267,31 +248,20 @@
                     </div>
                 </div>
 
-                <div class="remember-forgot">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember">
-                        <label>Remember me</label>
-                    </label>
-                    <a href="#" class="forgot-link">Forgot Password?</a>
+                <div class="forgot-link">
+                    <a href="#">Forgot Password?</a>
                 </div>
 
                 <button type="submit" class="btn-login">
                     <i class="fas fa-sign-in-alt"></i> Sign In
                 </button>
 
-                <div class="divider">OR</div>
-
                 <div class="register-link">
-                    Don't have an account? <a href="/Account/Register">Create Account</a>
-                </div>
-
-                <div class="demo-credentials">
-                    <p><i class="fas fa-info-circle"></i> Demo Credentials (Testing Only):</p>
-                    <code>Admin: admin@city.com / Admin@123</code>
-                    <code>Operator: operator@city.com / Operator@123</code>
+                    Don't have an account? <a href="/Account/Register">Register here</a>
                 </div>
             </form>
         </div>
     </div>
+
 </body>
 </html>

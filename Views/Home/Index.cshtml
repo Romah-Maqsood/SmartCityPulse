@@ -1,6 +1,6 @@
 ﻿@{
     Layout = null;
-    ViewData["Title"] = "Smart Civic Alert System";
+    ViewData["Title"] = "Smart Civic Alert";
 }
 
 <!DOCTYPE html>
@@ -19,11 +19,13 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0F172A;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
             color: #FFFFFF;
             line-height: 1.5;
+            min-height: 100vh;
         }
 
+        /* Navbar - Sirf Logo, Login, Register */
         .navbar {
             background-color: #1E293B;
             border-bottom: 2px solid #3B82F6;
@@ -39,7 +41,15 @@
             font-size: 1.5rem;
             font-weight: bold;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
+
+            .navbar-brand i {
+                color: #3B82F6;
+                font-size: 1.75rem;
+            }
 
             .navbar-brand span {
                 color: #3B82F6;
@@ -48,12 +58,15 @@
         .nav-links {
             display: flex;
             gap: 1.5rem;
-            flex-wrap: wrap;
         }
 
             .nav-links a {
                 color: #94A3B8;
                 text-decoration: none;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                transition: color 0.3s ease;
             }
 
                 .nav-links a:hover {
@@ -100,9 +113,12 @@
             font-size: 1rem;
             font-weight: 500;
             text-decoration: none;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             cursor: pointer;
             border: none;
+            transition: all 0.3s ease;
         }
 
         .btn-primary {
@@ -112,17 +128,7 @@
 
             .btn-primary:hover {
                 background-color: #2563EB;
-            }
-
-        .btn-outline-primary {
-            background-color: transparent;
-            border: 1px solid #3B82F6;
-            color: #3B82F6;
-        }
-
-            .btn-outline-primary:hover {
-                background-color: #3B82F6;
-                color: white;
+                transform: translateY(-2px);
             }
 
         .btn-lg {
@@ -198,7 +204,6 @@
             padding: 1.5rem;
             text-align: center;
             position: relative;
-            min-width: 150px;
         }
 
         .step-number {
@@ -291,16 +296,48 @@
             color: #64748B;
             border-top: 1px solid #334155;
         }
+
+        @@media (max-width: 768px) {
+            .feature-grid
+
+        {
+            grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps-container {
+            flex-direction: column;
+        }
+
+        .step-arrow {
+            transform: rotate(90deg);
+            justify-content: center;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+        }
+
+        .hero-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        }
     </style>
 </head>
 <body>
 
     <nav class="navbar">
-        <a href="/" class="navbar-brand"><i class="fas fa-city"></i> SMART CIVIC <span>ALERT</span></a>
+        <a href="/" class="navbar-brand">
+            <i class="fas fa-city"></i> SMART CIVIC <span>ALERT</span>
+        </a>
         <div class="nav-links">
-            <a href="/Home/Index"><i class="fas fa-home"></i> Home</a>
-            <a href="/Home/Privacy"><i class="fas fa-shield-alt"></i> Privacy</a>
             <a href="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
+            <a href="/Account/Register"><i class="fas fa-user-plus"></i> Register</a>
         </div>
     </nav>
 
@@ -315,7 +352,9 @@
                 get real-time updates, and let AI route incidents to the right department.
             </p>
             <div class="hero-buttons">
-                <a href="/Home/ReportIncident" class="btn btn-primary btn-lg"><i class="fas fa-exclamation-triangle"></i> Report Incident</a>
+                <a href="/Incident/Create" class="btn btn-primary btn-lg">
+                    <i class="fas fa-exclamation-triangle"></i> Report Incident
+                </a>
             </div>
         </div>
 
@@ -396,7 +435,9 @@
         <div class="cta-section">
             <h2>Ready to Report an Incident?</h2>
             <p>Join thousands of citizens using Smart Civic Alert to keep their city safe.</p>
-            <a href="/Home/ReportIncident" class="btn btn-primary btn-lg"><i class="fas fa-exclamation-triangle"></i> Report Incident Now</a>
+            <a href="/Incident/Create" class="btn btn-primary btn-lg">
+                <i class="fas fa-exclamation-triangle"></i> Report Incident Now
+            </a>
         </div>
     </div>
 
