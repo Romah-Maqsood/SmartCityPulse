@@ -1,0 +1,169 @@
+﻿@model IEnumerable<SmartCityPulse.Models.Incident>
+
+@{
+    Layout = null;
+    ViewData["Title"] = "All Incidents";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0F172A;
+            color: #FFFFFF;
+        }
+
+        .navbar {
+            background-color: #1E293B;
+            border-bottom: 2px solid #3B82F6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .navbar-brand span {
+                color: #3B82F6;
+            }
+
+        .nav-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        h1 {
+            margin-bottom: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #1E293B;
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        th {
+            background-color: #0F172A;
+            padding: 1rem;
+            text-align: left;
+            color: #94A3B8;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+        }
+
+        .severity-critical {
+            color: #EF4444;
+            font-weight: bold;
+        }
+
+        .severity-high {
+            color: #F97316;
+            font-weight: bold;
+        }
+
+        .severity-medium {
+            color: #EAB308;
+            font-weight: bold;
+        }
+
+        .severity-low {
+            color: #22C55E;
+            font-weight: bold;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+
+        .alert-success {
+            background-color: #14532D;
+            color: #BBF7D0;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">🔥 SMART CIVIC <span>ALERT</span></a>
+        <div class="nav-links">
+            <a href="/Home/Index">Home</a>
+            <a href="/Account/Login">Login</a>
+            <a href="/Incident/Create">Report Incident</a>
+            <a href="/Incident/Index">All Incidents</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1><i class="fas fa-list"></i> All Incidents</h1>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert-success">@TempData["SuccessMessage"]</div>
+        }
+
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr><th>ID</th><th>Title</th><th>Location</th><th>Severity</th><th>Status</th><th>Reported At</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var incident in Model)
+                    {
+                        <tr>
+                            <td>@incident.Id</td>
+                            <td>@incident.Title</td>
+                            <td>@incident.Location</td>
+                            <td class="severity-@incident.Severity.ToLower()">@incident.Severity</td>
+                            <td>@incident.Status</td>
+                            <td>@incident.ReportedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div style="margin-top: 2rem;">
+            <a href="/Incident/Create" class="btn btn-primary"><i class="fas fa-plus"></i> Report New Incident</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,7 +14,7 @@ namespace SmartCityPulse.Models
 
         [BsonElement("description")]
         public string Description { get; set; } = string.Empty;
-        //location detail
+
         [BsonElement("location")]
         public string Location { get; set; } = string.Empty;
 
@@ -23,13 +23,16 @@ namespace SmartCityPulse.Models
 
         [BsonElement("longitude")]
         public double? Longitude { get; set; }
-        //to show severity
+
         [BsonElement("severity")]
         public string Severity { get; set; } = "Medium";
 
+        [BsonElement("department")]      // ✅ YEH PROPERTY ADD KARO
+        public string Department { get; set; } = "Unassigned";
+
         [BsonElement("status")]
         public string Status { get; set; } = "Open";
-        //It tells the time case was reported
+
         [BsonElement("reportedAt")]
         public DateTime ReportedAt { get; set; } = DateTime.UtcNow;
 

@@ -16,5 +16,6 @@ namespace SmartCityPulse.Data
         }
 
         public IMongoCollection<Incident> Incidents => _database.GetCollection<Incident>("Incidents");
+        public IMongoCollection<AppUser> Users => _database.GetCollection<AppUser>("Users");
     }
 }

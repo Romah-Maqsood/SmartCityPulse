@@ -1,0 +1,177 @@
+﻿@{
+    Layout = null;
+    ViewData["Title"] = "Report Incident - Smart Civic Alert";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .navbar {
+            background-color: #1E293B;
+            border-bottom: 2px solid #3B82F6;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+            .navbar-brand span {
+                color: #3B82F6;
+            }
+
+        .nav-links a {
+            color: #94A3B8;
+            text-decoration: none;
+            margin-left: 1.5rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: #1E293B;
+            border-radius: 24px;
+            border: 1px solid #334155;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            color: #94A3B8;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #0F172A;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                outline: none;
+                border-color: #3B82F6;
+            }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 0.875rem;
+            background-color: #3B82F6;
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+            .btn-submit:hover {
+                background-color: #2563EB;
+            }
+
+        .alert-success {
+            background-color: #14532D;
+            color: #BBF7D0;
+            padding: 0.75rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #22C55E;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/" class="navbar-brand">🔥 SMART CIVIC <span>ALERT</span></a>
+        <div class="nav-links">
+            <a href="/Home/Index">Home</a>
+            <a href="/Account/Login">Login</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1><i class="fas fa-exclamation-triangle"></i> Report Incident</h1>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert-success">
+                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <form method="post" action="/Incident/Create">
+            <div class="form-group">
+                <label><i class="fas fa-heading"></i> Title</label>
+                <input type="text" name="Title" placeholder="e.g., Fire in Market" required />
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-align-left"></i> Description</label>
+                <textarea name="Description" placeholder="Describe the incident in detail..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-location-dot"></i> Location</label>
+                <input type="text" name="Location" placeholder="e.g., Gulshan Chowrangi, Karachi" required />
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-chart-line"></i> Severity</label>
+                <select name="Severity" required>
+                    <option value="Low">🟢 Low</option>
+                    <option value="Medium">🟡 Medium</option>
+                    <option value="High">🟠 High</option>
+                    <option value="Critical">🔴 Critical</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-submit">
+                <i class="fas fa-paper-plane"></i> Submit Incident
+            </button>
+        </form>
+    </div>
+
+</body>
+</html>
