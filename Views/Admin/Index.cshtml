@@ -10,341 +10,101 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0F172A;
-            color: #FFFFFF;
-        }
-
-        /* Main Container */
-        .admin-container {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* Sidebar (25%) */
-        .sidebar {
-            width: 280px;
-            background-color: #1E293B;
-            border-right: 1px solid #334155;
-            position: fixed;
-            height: 100vh;
-            overflow-y: auto;
-        }
-
-        .sidebar-header {
-            padding: 1.5rem;
-            border-bottom: 1px solid #334155;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-            .sidebar-header i {
-                font-size: 1.75rem;
-                color: #3B82F6;
-            }
-
-            .sidebar-header h2 {
-                font-size: 1.25rem;
-                color: white;
-            }
-
-            .sidebar-header span {
-                color: #3B82F6;
-            }
-
-        .nav-menu {
-            padding: 1.5rem 0;
-        }
-
-        .nav-item {
-            padding: 0.75rem 1.5rem;
-            margin: 0.25rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: #94A3B8;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-            .nav-item:hover, .nav-item.active {
-                background-color: #334155;
-                color: #3B82F6;
-                border-left: 3px solid #3B82F6;
-            }
-
-            .nav-item i {
-                width: 24px;
-            }
-
-        /* Main Content (75%) */
-        .main-content {
-            margin-left: 280px;
-            flex: 1;
-            padding: 1.5rem;
-        }
-
-        /* Top Navbar */
-        .top-navbar {
-            background-color: #1E293B;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            border: 1px solid #334155;
-        }
-
-        .welcome-text h3 {
-            color: white;
-        }
-
-        .welcome-text p {
-            color: #94A3B8;
-            font-size: 0.875rem;
-        }
-
-        .user-menu {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            position: relative;
-        }
-
-        .user-name {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            background-color: #0F172A;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background-color: #1E293B;
-            border: 1px solid #334155;
-            border-radius: 8px;
-            width: 150px;
-            display: none;
-            z-index: 100;
-        }
-
-            .dropdown-menu.show {
-                display: block;
-            }
-
-            .dropdown-menu a {
-                display: flex;
-                align-items: center;
-                gap: 0.5rem;
-                padding: 0.75rem 1rem;
-                color: #94A3B8;
-                text-decoration: none;
-            }
-
-                .dropdown-menu a:hover {
-                    background-color: #334155;
-                    color: #3B82F6;
-                }
-
-        /* Stat Cards */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .stat-card {
-            background-color: #1E293B;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 1.5rem;
-        }
-
-        .stat-value {
-            font-size: 2rem;
-            font-weight: bold;
-            color: white;
-        }
-
-        .stat-label {
-            color: #94A3B8;
-            font-size: 0.875rem;
-            margin: 0.5rem 0;
-        }
-
-        .stat-trend-up {
-            color: #22C55E;
-            font-size: 0.75rem;
-        }
-
-        .stat-trend-down {
-            color: #EF4444;
-            font-size: 0.75rem;
-        }
-
-        /* Section Headers */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-            .section-header h2 {
-                font-size: 1.25rem;
-            }
-
-        /* Tables */
-        .table-container {
-            background-color: #1E293B;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            overflow-x: auto;
-            margin-bottom: 2rem;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #334155;
-        }
-
-        th {
-            color: #94A3B8;
-            font-weight: 500;
-        }
-
-        .severity-critical {
-            color: #EF4444;
-            font-weight: bold;
-        }
-
-        .severity-high {
-            color: #F97316;
-            font-weight: bold;
-        }
-
-        .severity-medium {
-            color: #EAB308;
-            font-weight: bold;
-        }
-
-        .severity-low {
-            color: #22C55E;
-            font-weight: bold;
-        }
-
-        .status-open {
-            color: #3B82F6;
-        }
-
-        .status-progress {
-            color: #F59E0B;
-        }
-
-        .status-resolved {
-            color: #22C55E;
-        }
-
-        /* Critical Alerts */
-        .critical-alert {
-            background: linear-gradient(135deg, #7F1D1D 0%, #1E293B 100%);
-            border-left: 4px solid #EF4444;
-            border-radius: 12px;
-            padding: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-link {
-            background: none;
-            border: none;
-            color: #3B82F6;
-            cursor: pointer;
-        }
-
-        /* Dynamic Content Area */
-        .dynamic-content {
-            display: none;
-        }
-
-            .dynamic-content.active {
-                display: block;
-            }
-
-        @@media (max-width: 768px) {
-            .sidebar
-
-        {
-            width: 100%;
-            position: relative;
-            height: auto;
-        }
-
-        .main-content {
-            margin-left: 0;
-        }
-
-        .stats-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0F172A; color: #FFFFFF; }
+        .admin-container { display: flex; min-height: 100vh; }
+        .sidebar { width: 280px; background-color: #1E293B; border-right: 1px solid #334155; position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid #334155; display: flex; align-items: center; gap: 0.75rem; }
+        .sidebar-header i { font-size: 1.75rem; color: #3B82F6; }
+        .sidebar-header h2 { font-size: 1.25rem; color: white; }
+        .sidebar-header span { color: #3B82F6; }
+        .nav-menu { padding: 1.5rem 0; }
+        .nav-item { padding: 0.75rem 1.5rem; margin: 0.25rem 0; display: flex; align-items: center; gap: 0.75rem; color: #94A3B8; text-decoration: none; transition: all 0.3s ease; cursor: pointer; }
+        .nav-item:hover, .nav-item.active { background-color: #334155; color: #3B82F6; border-left: 3px solid #3B82F6; }
+        .nav-item i { width: 24px; }
+        .main-content { margin-left: 280px; flex: 1; padding: 1.5rem; }
+        .top-navbar { background-color: #1E293B; border-radius: 12px; padding: 0.75rem 1.5rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border: 1px solid #334155; }
+        .welcome-text h3 { color: white; }
+        .welcome-text p { color: #94A3B8; font-size: 0.875rem; }
+        .user-menu { display: flex; align-items: center; gap: 1rem; position: relative; }
+        .user-name { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; padding: 0.5rem 1rem; border-radius: 8px; background-color: #0F172A; }
+        .dropdown-menu { position: absolute; top: 100%; right: 0; background-color: #1E293B; border: 1px solid #334155; border-radius: 8px; width: 150px; display: none; z-index: 100; }
+        .dropdown-menu.show { display: block; }
+        .dropdown-menu a { display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1rem; color: #94A3B8; text-decoration: none; }
+        .dropdown-menu a:hover { background-color: #334155; color: #3B82F6; }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background-color: #1E293B; border: 1px solid #334155; border-radius: 16px; padding: 1.5rem; }
+        .stat-value { font-size: 2rem; font-weight: bold; color: white; }
+        .stat-label { color: #94A3B8; font-size: 0.875rem; margin: 0.5rem 0; }
+        .stat-trend-up { color: #22C55E; font-size: 0.75rem; }
+        .stat-trend-down { color: #EF4444; font-size: 0.75rem; }
+        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+        .section-header h2 { font-size: 1.25rem; }
+        .table-container { background-color: #1E293B; border: 1px solid #334155; border-radius: 12px; overflow-x: auto; margin-bottom: 2rem; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #334155; }
+        th { color: #94A3B8; font-weight: 500; }
+        .severity-critical { color: #EF4444; font-weight: bold; }
+        .severity-high { color: #F97316; font-weight: bold; }
+        .severity-medium { color: #EAB308; font-weight: bold; }
+        .severity-low { color: #22C55E; font-weight: bold; }
+        .status-open { color: #3B82F6; }
+        .status-progress { color: #F59E0B; }
+        .status-resolved { color: #22C55E; }
+        .critical-alert { background: linear-gradient(135deg, #7F1D1D 0%, #1E293B 100%); border-left: 4px solid #EF4444; border-radius: 12px; padding: 1rem; display: flex; justify-content: space-between; align-items: center; }
+        .btn-link { background: none; border: none; color: #3B82F6; cursor: pointer; }
+        .dynamic-content { display: none; }
+        .dynamic-content.active { display: block; }
+        .btn { padding: 6px 12px; border-radius: 4px; border: none; cursor: pointer; font-size: 0.9rem; display: inline-block; text-decoration: none; }
+        .btn-edit { background: #3B82F6; color: white; }
+        .btn-delete { background: #EF4444; color: white; }
+        .btn-save { background: #22C55E; color: white; margin-top: 15px; }
+        .btn-cancel { background: #64748B; color: white; margin-top: 15px; }
+        .btn-refresh { background: #334155; color: white; }
+        .btn-add { background: #3B82F6; color: white; padding: 8px 16px; font-size: 1rem; }
+        label { display: block; margin: 10px 0 5px; color: #94A3B8; }
+        input, select, textarea { width: 100%; padding: 10px; border-radius: 6px; border: 1px solid #334155; background: #0F172A; color: #fff; margin-bottom: 10px; }
+        .chart-container { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        .chart-box { flex: 1; min-width: 300px; background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 1.5rem; }
+        .chart-box h3 { margin-bottom: 1rem; color: #94A3B8; }
+        canvas { max-height: 300px; }
+        /* Modal & Toast */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 9999; visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .modal-overlay.active { visibility: visible; opacity: 1; }
+        .modal-box { background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 2rem; max-width: 400px; width: 90%; text-align: center; color: #fff; }
+        .modal-box h3 { margin-bottom: 1rem; font-size: 1.25rem; }
+        .modal-box p { margin-bottom: 1.5rem; color: #94A3B8; }
+        .modal-buttons { display: flex; gap: 1rem; justify-content: center; }
+        .btn-confirm { background: #EF4444; color: white; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; }
+        .btn-cancel-modal { background: #334155; color: white; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; }
+        .toast { position: fixed; top: 20px; right: 20px; background: #1E293B; border: 1px solid #334155; color: #fff; padding: 1rem 1.5rem; border-radius: 8px; z-index: 10000; box-shadow: 0 8px 20px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; transform: translateX(120%); transition: transform 0.3s ease; }
+        .toast.show { transform: translateX(0); }
+        .toast.success { border-left: 4px solid #22C55E; }
+        .toast.error { border-left: 4px solid #EF4444; }
+        .toast i { font-size: 1.2rem; }
+        .toast .message { flex: 1; }
+        @@media (max-width: 768px) { .sidebar { width: 100%; position: relative; height: auto; } .main-content { margin-left: 0; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
     <div class="admin-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <i class="fas fa-city"></i>
                 <h2>SMART CIVIC <span>ALERT</span></h2>
             </div>
             <div class="nav-menu">
-                <a href="#" class="nav-item active" data-page="dashboard">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
-                </a>
-                <a href="#" class="nav-item" data-page="incidents">
-                    <i class="fas fa-list"></i> Incidents
-                </a>
-                <a href="#" class="nav-item" data-page="operators">
-                    <i class="fas fa-users"></i> Operators
-                </a>
-                <a href="#" class="nav-item" data-page="analytics">
-                    <i class="fas fa-chart-line"></i> Analytics
-                </a>
-                <a href="#" class="nav-item" data-page="reports">
-                    <i class="fas fa-download"></i> Reports
-                </a>
+                <a href="#" class="nav-item active" data-page="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="#" class="nav-item" data-page="incidents"><i class="fas fa-list"></i> Incidents</a>
+                <a href="#" class="nav-item" data-page="operators"><i class="fas fa-users"></i> Operators</a>
+                <a href="#" class="nav-item" data-page="analytics"><i class="fas fa-chart-line"></i> Analytics</a>
+                <a href="#" class="nav-item" data-page="reports"><i class="fas fa-download"></i> Reports</a>
             </div>
         </div>
 
-        <!-- Main Content -->
         <div class="main-content">
-            <!-- Top Navbar -->
             <div class="top-navbar">
                 <div class="welcome-text">
                     <h3>Welcome back, @ViewBag.UserName!</h3>
@@ -352,8 +112,7 @@
                 </div>
                 <div class="user-menu">
                     <div class="user-name" onclick="toggleDropdown()">
-                        <i class="fas fa-user-circle"></i> Admin
-                        <i class="fas fa-chevron-down"></i>
+                        <i class="fas fa-user-circle"></i> Admin <i class="fas fa-chevron-down"></i>
                     </div>
                     <div class="dropdown-menu" id="dropdownMenu">
                         <a href="#"><i class="fas fa-user"></i> Profile</a>
@@ -364,49 +123,36 @@
 
             <!-- ==================== DASHBOARD PAGE ==================== -->
             <div id="dashboard-page" class="dynamic-content active">
-                <!-- Stats Cards -->
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-value">@ViewBag.TotalToday</div>
                         <div class="stat-label">Total Today</div>
                         <div class="@(ViewBag.TotalTrend >= 0 ? "stat-trend-up" : "stat-trend-down")">
-                            <i class="fas @(ViewBag.TotalTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i>
-                            @Math.Abs(ViewBag.TotalTrend)% from yesterday
+                            <i class="fas @(ViewBag.TotalTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i> @Math.Abs(ViewBag.TotalTrend)% from yesterday
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">@ViewBag.ResolvedToday</div>
                         <div class="stat-label">Resolved</div>
                         <div class="@(ViewBag.ResolvedTrend >= 0 ? "stat-trend-up" : "stat-trend-down")">
-                            <i class="fas @(ViewBag.ResolvedTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i>
-                            @Math.Abs(ViewBag.ResolvedTrend)% from yesterday
+                            <i class="fas @(ViewBag.ResolvedTrend >= 0 ? "fa-arrow-up" : "fa-arrow-down")"></i> @Math.Abs(ViewBag.ResolvedTrend)% from yesterday
                         </div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">@ViewBag.CriticalIncidents</div>
                         <div class="stat-label">Critical</div>
-                        <div class="stat-trend-down">
-                            <i class="fas fa-arrow-down"></i> 2% from last week
-                        </div>
+                        <div class="stat-trend-down"><i class="fas fa-arrow-down"></i> 2% from last week</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-value">@ViewBag.PendingIncidents</div>
                         <div class="stat-label">Pending</div>
-                        <div class="stat-trend-down">
-                            <i class="fas fa-arrow-down"></i> 10% from yesterday
-                        </div>
+                        <div class="stat-trend-down"><i class="fas fa-arrow-down"></i> 10% from yesterday</div>
                     </div>
                 </div>
-
-                <!-- Recent Incidents Table -->
-                <div class="section-header">
-                    <h2><i class="fas fa-history"></i> Recent Incidents</h2>
-                </div>
+                <div class="section-header"><h2><i class="fas fa-history"></i> Recent Incidents</h2></div>
                 <div class="table-container">
                     <table>
-                        <thead>
-                            <tr><th>ID</th><th>Title</th><th>Department</th><th>Severity</th><th>Status</th><th>Time</th></tr>
-                        </thead>
+                        <thead><tr><th>ID</th><th>Title</th><th>Department</th><th>Severity</th><th>Status</th><th>Time</th></tr></thead>
                         <tbody>
                             @foreach (var incident in ViewBag.RecentIncidents)
                             {
@@ -422,83 +168,459 @@
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Critical Alerts -->
                 <div class="critical-alert">
-                    <div>
-                        <strong><i class="fas fa-exclamation-triangle"></i> CRITICAL ALERTS</strong><br>
-                        <span>@ViewBag.CriticalPending critical incidents require immediate attention.</span>
-                    </div>
+                    <div><strong><i class="fas fa-exclamation-triangle"></i> CRITICAL ALERTS</strong><br><span>@ViewBag.CriticalPending critical incidents require immediate attention.</span></div>
                     <a href="#" class="btn-link" data-page="incidents">Click to view →</a>
                 </div>
             </div>
 
-            <!-- ==================== INCIDENTS PAGE (Placeholder) ==================== -->
+            <!-- ==================== INCIDENTS PAGE ==================== -->
             <div id="incidents-page" class="dynamic-content">
-                <h2>All Incidents Management</h2>
-                <p>Incidents list with edit/delete options will appear here.</p>
-                <div class="table-container">
-                    <table>
-                        <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th><th>Actions</th></tr></thead>
-                        <tbody><tr><td colspan="5">Loading incidents...</td></tr></tbody>
-                    </table>
+                <div id="incident-list-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-list"></i> All Incidents</h2>
+                        <button class="btn btn-refresh" onclick="loadIncidentList()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="incident-table">
+                            <thead><tr><th>ID</th><th>Title</th><th>Location</th><th>Dept</th><th>Severity</th><th>Status</th><th>Actions</th></tr></thead>
+                            <tbody id="incident-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="incident-edit-section" style="display:none;">
+                    <h2><i class="fas fa-edit"></i> Edit Incident</h2>
+                    <form id="editForm" onsubmit="submitEdit(event)">
+                        <input type="hidden" id="edit-id" name="Id" />
+                        <label>Title</label><input id="edit-title" name="Title" required />
+                        <label>Description</label><textarea id="edit-description" name="Description" rows="3"></textarea>
+                        <label>Location</label><input id="edit-location" name="Location" required />
+                        <label>Severity</label>
+                        <select id="edit-severity" name="Severity"><option>Low</option><option>Medium</option><option>High</option><option>Critical</option></select>
+                        <label>Department</label>
+                        <select id="edit-department" name="Department"><option>Fire Department</option><option>Police Department</option><option>Rescue Department</option></select>
+                        <label>Status</label>
+                        <select id="edit-status" name="Status"><option>Open</option><option>In Progress</option><option>Resolved</option></select>
+                        <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save Changes</button>
+                        <button type="button" class="btn btn-cancel" onclick="closeEditForm()">Cancel</button>
+                    </form>
                 </div>
             </div>
 
-            <!-- ==================== OPERATORS PAGE (Placeholder) ==================== -->
+            <!-- ==================== OPERATORS PAGE ==================== -->
             <div id="operators-page" class="dynamic-content">
-                <h2>Operators Management</h2>
-                <p>Add/Edit/Delete operators will appear here.</p>
-                <button class="btn-primary" style="padding: 0.5rem 1rem; border-radius: 8px;">+ Add New Operator</button>
+                <div id="operator-list-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-users"></i> Operators Management</h2>
+                        <button class="btn btn-add" onclick="openAddOperatorForm()"><i class="fas fa-plus"></i> Add New Operator</button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Department</th><th>Actions</th></tr></thead>
+                            <tbody id="operator-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="operator-form-section" style="display:none;">
+                    <h2 id="operator-form-title">Add New Operator</h2>
+                    <form id="operatorForm" onsubmit="submitOperatorForm(event)">
+                        <input type="hidden" id="operator-id" />
+                        <label>Name</label><input id="operator-name" required />
+                        <label>Email</label><input id="operator-email" type="email" required />
+                        <label>Role</label>
+                        <select id="operator-role"><option>Operator</option></select>
+                        <label>Department</label>
+                        <select id="operator-department">
+                            <option value="">Select Department</option>
+                            <option>Fire Department</option>
+                            <option>Police Department</option>
+                            <option>Rescue Department</option>
+                        </select>
+                        <label>Password (leave blank to keep unchanged)</label>
+                        <input id="operator-password" type="password" placeholder="Leave blank to keep unchanged" />
+                        <button type="submit" class="btn btn-save"><i class="fas fa-save"></i> Save</button>
+                        <button type="button" class="btn btn-cancel" onclick="cancelOperatorForm()">Cancel</button>
+                    </form>
+                </div>
             </div>
 
-            <!-- ==================== ANALYTICS PAGE (Placeholder) ==================== -->
+            <!-- ==================== ANALYTICS PAGE ==================== -->
             <div id="analytics-page" class="dynamic-content">
-                <h2>Analytics Dashboard</h2>
-                <p>Charts and graphs will appear here.</p>
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> Analytics Overview</h2>
+                    <button class="btn btn-refresh" onclick="loadAnalytics()"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+                <div class="chart-container">
+                    <div class="chart-box"><h3>Incidents by Severity</h3><canvas id="severityChart"></canvas></div>
+                    <div class="chart-box"><h3>Incidents by Department</h3><canvas id="departmentChart"></canvas></div>
+                </div>
+                <div class="chart-box" style="margin-bottom:20px;"><h3>Trend (Last 7 Days)</h3><canvas id="trendChart"></canvas></div>
             </div>
 
             <!-- ==================== REPORTS PAGE (Placeholder) ==================== -->
-            <div id="reports-page" class="dynamic-content">
-                <h2>Reports Export</h2>
-                <p>PDF and CSV export options will appear here.</p>
+            <div id="reports-page" class="dynamic-content"><h2>Reports Export</h2><p>Coming soon.</p></div>
+        </div>
+    </div>
+
+    <!-- ========== CUSTOM MODAL ========== -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-exclamation-triangle" style="color:#EF4444;"></i> Confirm Delete</h3>
+            <p id="deleteMessage">Are you sure?</p>
+            <div class="modal-buttons">
+                <button class="btn-cancel-modal" onclick="closeDeleteModal()">Cancel</button>
+                <button class="btn-confirm" id="confirmDeleteBtn">Yes, Delete</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // Dropdown toggle
-        function toggleDropdown() {
-            document.getElementById("dropdownMenu").classList.toggle("show");
-        }
+    <!-- ========== TOAST ========== -->
+    <div class="toast" id="toast">
+        <i id="toastIcon" class="fas"></i>
+        <span class="message" id="toastMessage"></span>
+    </div>
 
-        // Close dropdown when clicking outside
-        window.onclick = function(event) {
-            if (!event.target.matches('.user-name') && !event.target.closest('.user-name')) {
-                var dropdowns = document.getElementsByClassName("dropdown-menu");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    dropdowns[i].classList.remove("show");
-                }
-            }
+    <script>
+        // ========== COMMON ==========
+        function toggleDropdown() { document.getElementById("dropdownMenu").classList.toggle("show"); }
+        window.onclick = function(e) {
+            if (!e.target.matches('.user-name') && !e.target.closest('.user-name'))
+                document.getElementById("dropdownMenu").classList.remove("show");
         }
 
         // Sidebar navigation
         document.querySelectorAll('.nav-item').forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
-
-                // Remove active class from all nav items
-                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 this.classList.add('active');
-
-                // Hide all dynamic content
-                document.querySelectorAll('.dynamic-content').forEach(content => content.classList.remove('active'));
-
-                // Show selected content
+                document.querySelectorAll('.dynamic-content').forEach(c => c.classList.remove('active'));
                 const page = this.getAttribute('data-page');
                 document.getElementById(`${page}-page`).classList.add('active');
+                if (page === 'incidents') loadIncidentList();
+                if (page === 'operators') loadOperatorList();
+                if (page === 'analytics') loadAnalytics();
             });
         });
+        document.querySelectorAll('[data-page="incidents"]').forEach(el => {
+            el.addEventListener('click', () => document.querySelector('.nav-item[data-page="incidents"]').click());
+        });
+
+        // ========== TOAST ==========
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const icon = document.getElementById('toastIcon');
+            const msg = document.getElementById('toastMessage');
+            msg.innerText = message;
+            toast.className = 'toast ' + type;
+            icon.className = type === 'success' ? 'fas fa-check-circle' : 'fas fa-times-circle';
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        // ========== MODAL ==========
+        let deleteCallback = null;
+        function showDeleteModal(itemName, onConfirm) {
+            document.getElementById('deleteMessage').innerText = `Are you sure you want to delete ${itemName}?`;
+            deleteCallback = onConfirm;
+            document.getElementById('deleteModal').classList.add('active');
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('active');
+            deleteCallback = null;
+        }
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (deleteCallback) {
+                deleteCallback();
+                closeDeleteModal();
+            }
+        });
+
+        // ========== INCIDENT MANAGEMENT ==========
+        let allIncidents = [];
+        async function loadIncidentList() {
+            const tbody = document.getElementById('incident-tbody');
+            tbody.innerHTML = '<tr><td colspan="7">Loading incidents...</td></tr>';
+            try {
+                const res = await fetch('/Incident/GetAdminIncidentsJson');
+                if (!res.ok) throw new Error();
+                allIncidents = await res.json();
+                renderIncidentTable(allIncidents);
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="7">Error loading incidents.</td></tr>';
+                showToast('Failed to load incidents', 'error');
+            }
+        }
+        function renderIncidentTable(incidents) {
+            const tbody = document.getElementById('incident-tbody');
+            tbody.innerHTML = '';
+            incidents.forEach(inc => {
+                const row = document.createElement('tr');
+                row.setAttribute('data-description', inc.description || '');
+                row.innerHTML = `<td>${inc.id.substring(inc.id.length - 6)}</td>
+                    <td class="title">${escapeHtml(inc.title)}</td>
+                    <td class="location">${escapeHtml(inc.location || '')}</td>
+                    <td class="department">${escapeHtml(inc.department || '')}</td>
+                    <td class="severity severity-${inc.severity.toLowerCase()}">${inc.severity}</td>
+                    <td class="status status-${inc.status.toLowerCase().replace(' ', '')}">${inc.status}</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="openEditForm('${inc.id}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-delete" onclick="deleteIncident('${inc.id}')"><i class="fas fa-trash"></i> Delete</button>
+                    </td>`;
+                tbody.appendChild(row);
+            });
+        }
+        function escapeHtml(text) { return text ? text.replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;' }[m])) : ''; }
+        function openEditForm(id) {
+            const inc = allIncidents.find(i => i.id === id);
+            if (!inc) return;
+            document.getElementById('edit-id').value = inc.id;
+            document.getElementById('edit-title').value = inc.title || '';
+            document.getElementById('edit-description').value = inc.description || '';
+            document.getElementById('edit-location').value = inc.location || '';
+            setSelectByValue('edit-severity', inc.severity);
+            setSelectByValue('edit-department', inc.department);
+            setSelectByValue('edit-status', inc.status);
+            document.getElementById('incident-list-section').style.display = 'none';
+            document.getElementById('incident-edit-section').style.display = 'block';
+        }
+        function setSelectByValue(selId, val) {
+            const sel = document.getElementById(selId);
+            for (let i = 0; i < sel.options.length; i++) {
+                if (sel.options[i].value === val) { sel.selectedIndex = i; return; }
+            }
+        }
+        function closeEditForm() {
+            document.getElementById('incident-list-section').style.display = 'block';
+            document.getElementById('incident-edit-section').style.display = 'none';
+        }
+        async function submitEdit(e) {
+            e.preventDefault();
+            const form = document.getElementById('editForm');
+            const data = new FormData(form);
+            const payload = {};
+            data.forEach((v, k) => payload[k] = v);
+            const id = document.getElementById('edit-id').value;
+            try {
+                const res = await fetch(`/Incident/UpdateIncident?id=${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast('Incident updated successfully', 'success');
+                    closeEditForm();
+                    loadIncidentList();
+                } else {
+                    showToast(result.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Network error', 'error');
+            }
+        }
+        function deleteIncident(id) {
+            showDeleteModal('this incident', async () => {
+                try {
+                    const res = await fetch(`/Incident/DeleteIncident?id=${id}`, { method: 'POST' });
+                    const result = await res.json();
+                    if (result.success) {
+                        showToast('Incident deleted', 'success');
+                        loadIncidentList();
+                    } else {
+                        showToast(result.message, 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('Network error', 'error');
+                }
+            });
+        }
+
+        // ========== OPERATOR MANAGEMENT ==========
+        let allOperators = [];
+        async function loadOperatorList() {
+            const tbody = document.getElementById('operator-tbody');
+            tbody.innerHTML = '<tr><td colspan="5">Loading operators...</td></tr>';
+            try {
+                const res = await fetch('/Admin/GetOperatorsJson');
+                if (!res.ok) throw new Error();
+                allOperators = await res.json();
+                renderOperatorTable(allOperators);
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="5">Error loading operators.</td></tr>';
+                showToast('Failed to load operators', 'error');
+            }
+        }
+        function renderOperatorTable(operators) {
+            const tbody = document.getElementById('operator-tbody');
+            tbody.innerHTML = '';
+            operators.forEach(op => {
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${escapeHtml(op.name)}</td>
+                    <td>${escapeHtml(op.email)}</td>
+                    <td>${escapeHtml(op.role)}</td>
+                    <td>${escapeHtml(op.department || '—')}</td>
+                    <td>
+                        <button class="btn btn-edit" onclick="openEditOperatorForm('${op.id}')"><i class="fas fa-edit"></i> Edit</button>
+                        <button class="btn btn-delete" onclick="deleteOperator('${op.id}')"><i class="fas fa-trash"></i> Delete</button>
+                    </td>`;
+                tbody.appendChild(row);
+            });
+        }
+        function openAddOperatorForm() {
+            document.getElementById('operator-form-title').innerText = 'Add New Operator';
+            document.getElementById('operator-id').value = '';
+            document.getElementById('operator-name').value = '';
+            document.getElementById('operator-email').value = '';
+            document.getElementById('operator-role').value = 'Operator';
+            document.getElementById('operator-department').value = '';
+            document.getElementById('operator-password').value = '';
+            document.getElementById('operator-list-section').style.display = 'none';
+            document.getElementById('operator-form-section').style.display = 'block';
+        }
+        function openEditOperatorForm(id) {
+            const op = allOperators.find(o => o.id === id);
+            if (!op) return;
+            document.getElementById('operator-form-title').innerText = 'Edit Operator';
+            document.getElementById('operator-id').value = op.id;
+            document.getElementById('operator-name').value = op.name || '';
+            document.getElementById('operator-email').value = op.email || '';
+            document.getElementById('operator-role').value = op.role || 'Operator';
+            document.getElementById('operator-department').value = op.department || '';
+            document.getElementById('operator-password').value = '';
+            document.getElementById('operator-list-section').style.display = 'none';
+            document.getElementById('operator-form-section').style.display = 'block';
+        }
+        function cancelOperatorForm() {
+            document.getElementById('operator-list-section').style.display = 'block';
+            document.getElementById('operator-form-section').style.display = 'none';
+        }
+        async function submitOperatorForm(e) {
+            e.preventDefault();
+            const id = document.getElementById('operator-id').value;
+            const isEdit = id !== '';
+            const payload = {
+                Name: document.getElementById('operator-name').value.trim(),
+                Email: document.getElementById('operator-email').value.trim(),
+                Role: document.getElementById('operator-role').value,
+                Department: document.getElementById('operator-department').value,
+                PasswordHash: document.getElementById('operator-password').value
+            };
+            if (!payload.Name || !payload.Email) { showToast('Name and Email are required.', 'error'); return; }
+            if (!isEdit && !payload.PasswordHash) { showToast('Password is required for new operators.', 'error'); return; }
+
+            const url = isEdit ? `/Admin/UpdateOperator?id=${id}` : '/Admin/CreateOperator';
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await res.json();
+                if (result.success) {
+                    showToast(result.message || 'Operation successful', 'success');
+                    cancelOperatorForm();
+                    loadOperatorList();
+                } else {
+                    showToast(result.message, 'error');
+                }
+            } catch (err) {
+                console.error(err);
+                showToast('Network error', 'error');
+            }
+        }
+        function deleteOperator(id) {
+            showDeleteModal('this operator', async () => {
+                try {
+                    const res = await fetch(`/Admin/DeleteOperator?id=${id}`, { method: 'POST' });
+                    const result = await res.json();
+                    if (result.success) {
+                        showToast('Operator deleted', 'success');
+                        loadOperatorList();
+                    } else {
+                        showToast(result.message, 'error');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast('Network error', 'error');
+                }
+            });
+        }
+
+        // ========== ANALYTICS ==========
+        let severityChart, departmentChart, trendChart;
+        async function loadAnalytics() {
+            try {
+                const res = await fetch('/Admin/GetAnalyticsJson');
+                if (!res.ok) throw new Error();
+                const data = await res.json();
+                renderSeverityChart(data.severity);
+                renderDepartmentChart(data.departments);
+                renderTrendChart(data.trend);
+            } catch (err) {
+                console.error(err);
+                showToast('Failed to load analytics', 'error');
+            }
+        }
+        function renderSeverityChart(severity) {
+            const ctx = document.getElementById('severityChart').getContext('2d');
+            if (severityChart) severityChart.destroy();
+            severityChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Critical', 'High', 'Medium', 'Low'],
+                    datasets: [{
+                        data: [severity.critical, severity.high, severity.medium, severity.low],
+                        backgroundColor: ['#EF4444', '#F97316', '#EAB308', '#22C55E'],
+                        borderColor: '#0F172A',
+                        borderWidth: 2
+                    }]
+                },
+                options: { responsive: true, plugins: { legend: { labels: { color: '#94A3B8' } } } }
+            });
+        }
+        function renderDepartmentChart(departments) {
+            const ctx = document.getElementById('departmentChart').getContext('2d');
+            if (departmentChart) departmentChart.destroy();
+            const labels = departments.map(d => d.department);
+            const counts = departments.map(d => d.count);
+            departmentChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{ label: 'Incidents', data: counts, backgroundColor: '#3B82F6', borderColor: '#2563EB', borderWidth: 1 }]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } },
+                    plugins: { legend: { labels: { color: '#94A3B8' } } }
+                }
+            });
+        }
+        function renderTrendChart(trend) {
+            const ctx = document.getElementById('trendChart').getContext('2d');
+            if (trendChart) trendChart.destroy();
+            const dates = trend.map(t => t.date);
+            const totals = trend.map(t => t.total);
+            const resolved = trend.map(t => t.resolved);
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        { label: 'Total Incidents', data: totals, borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', tension: 0.3 },
+                        { label: 'Resolved', data: resolved, borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,0.1)', tension: 0.3 }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: { y: { beginAtZero: true, ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } },
+                    plugins: { legend: { labels: { color: '#94A3B8' } } }
+                }
+            });
+        }
     </script>
 </body>
 </html>
