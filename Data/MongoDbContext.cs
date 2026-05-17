@@ -7,15 +7,19 @@ namespace SmartCityPulse.Data
     {
         private readonly IMongoDatabase _database;
 
-        public MongoDbContext(IConfiguration configuration)
+        public MongoDbContext(string connectionString, string databaseName)
         {
-            var connectionString = configuration.GetValue<string>("MongoDB:ConnectionString");
-            var databaseName = configuration.GetValue<string>("MongoDB:DatabaseName");
             var client = new MongoClient(connectionString);
             _database = client.GetDatabase(databaseName);
         }
 
-        public IMongoCollection<Incident> Incidents => _database.GetCollection<Incident>("Incidents");
+        // Existing Users collection (Citizen & Admin)
         public IMongoCollection<AppUser> Users => _database.GetCollection<AppUser>("Users");
+
+        // New Operators collection (only Operator role, separate table)
+        public IMongoCollection<AppUser> Operators => _database.GetCollection<AppUser>("Operators");
+
+        // Incidents collection
+        public IMongoCollection<Incident> Incidents => _database.GetCollection<Incident>("Incidents");
     }
 }
