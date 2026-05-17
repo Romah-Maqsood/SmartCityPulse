@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using MongoDB.Driver;
 using SmartCityPulse.Models;
 using SmartCityPulse.Data;
-using MongoDB.Bson;
+using System.Text;
 
 namespace SmartCityPulse.Controllers
 {
@@ -31,13 +31,13 @@ namespace SmartCityPulse.Controllers
             var todayEnd = todayStart.AddDays(1);
 
             var totalToday = await _context.Incidents
-                .CountAsync(i => i.ReportedAt >= todayStart && i.ReportedAt < todayEnd);
+                .CountDocumentsAsync(i => i.ReportedAt >= todayStart && i.ReportedAt < todayEnd);
             var resolvedToday = await _context.Incidents
-                .CountAsync(i => i.Status == "Resolved" && i.UpdatedAt >= todayStart && i.UpdatedAt < todayEnd);
+                .CountDocumentsAsync(i => i.Status == "Resolved" && i.UpdatedAt >= todayStart && i.UpdatedAt < todayEnd);
             var criticalIncidents = await _context.Incidents
-                .CountAsync(i => i.Severity == "Critical" && i.Status != "Resolved");
+                .CountDocumentsAsync(i => i.Severity == "Critical" && i.Status != "Resolved");
             var pendingIncidents = await _context.Incidents
-                .CountAsync(i => i.Status == "Open" || i.Status == "In Progress");
+                .CountDocumentsAsync(i => i.Status == "Open" || i.Status == "In Progress");
 
             var recentIncidents = await _context.Incidents
                 .Find(_ => true)
@@ -45,12 +45,16 @@ namespace SmartCityPulse.Controllers
                 .Limit(5)
                 .ToListAsync();
 
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            var criticalPending = await _context.Incidents
+                .CountDocumentsAsync(i => i.Severity == "Critical" && (i.Status == "Open" || i.Status == "In Progress"));
+
+            ViewBag.UserName = HttpContext.Session.GetString("UserName") ?? "Admin";
             ViewBag.TotalToday = totalToday;
             ViewBag.ResolvedToday = resolvedToday;
             ViewBag.CriticalIncidents = criticalIncidents;
             ViewBag.PendingIncidents = pendingIncidents;
             ViewBag.RecentIncidents = recentIncidents;
+            ViewBag.CriticalPending = criticalPending;
 
             return View();
         }
@@ -85,34 +89,8 @@ namespace SmartCityPulse.Controllers
             var incident = await _context.Incidents.Find(i => i.Id == id).FirstOrDefaultAsync();
             if (incident == null) return NotFound();
 
-            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            ViewBag.UserName = HttpContext.Session.GetString("UserName") ?? "Admin";
             return View(incident);
-        }
-
-        // ==================== UPDATE STATUS ====================
-        [HttpPost]
-        public async Task<IActionResult> UpdateStatus(string id, string status)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            var update = Builders<Incident>.Update
-                .Set(i => i.Status, status)
-                .Set(i => i.UpdatedAt, DateTime.UtcNow);
-
-            await _context.Incidents.UpdateOneAsync(i => i.Id == id, update);
-            TempData["Success"] = "Status updated successfully!";
-            return RedirectToAction("IncidentDetail", new { id });
-        }
-
-        // ==================== DELETE INCIDENT ====================
-        [HttpPost]
-        public async Task<IActionResult> DeleteIncident(string id)
-        {
-            if (!IsAdmin()) return RedirectToAction("Login", "Account");
-
-            await _context.Incidents.DeleteOneAsync(i => i.Id == id);
-            TempData["Success"] = "Incident deleted successfully!";
-            return RedirectToAction("Index");
         }
 
         // ==================== OPERATOR MANAGEMENT ====================
@@ -170,11 +148,11 @@ namespace SmartCityPulse.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteOperator(string id)
+        public async Task<IActionResult> DeleteOperator([FromBody] AppUser delOp)
         {
             if (!IsAdmin()) return Json(new { success = false, message = "Unauthorized" });
 
-            await _context.Operators.DeleteOneAsync(o => o.Id == id);
+            await _context.Operators.DeleteOneAsync(o => o.Id == delOp.Id);
             return Json(new { success = true, message = "Operator deleted." });
         }
 
@@ -209,6 +187,47 @@ namespace SmartCityPulse.Controllers
             });
 
             return Json(new { severity, departments = deptGroups, trend });
+        }
+
+        // ==================== REPORT EXPORT (CSV) ====================
+        [HttpGet]
+        public async Task<IActionResult> ExportReport(string startDate, string endDate, string department, string severity)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            var incidents = await _context.Incidents.Find(_ => true).ToListAsync();
+
+            // Apply filters
+            if (DateTime.TryParse(startDate, out var start))
+                incidents = incidents.Where(i => i.ReportedAt >= start).ToList();
+            if (DateTime.TryParse(endDate, out var end))
+                incidents = incidents.Where(i => i.ReportedAt <= end).ToList();
+            if (!string.IsNullOrEmpty(department))
+                incidents = incidents.Where(i => i.Department == department).ToList();
+            if (!string.IsNullOrEmpty(severity))
+                incidents = incidents.Where(i => i.Severity == severity).ToList();
+
+            var csv = new StringBuilder();
+            csv.AppendLine("ID,Title,Description,Location,Department,Severity,Status,ReportedAt,UpdatedAt");
+
+            foreach (var inc in incidents)
+            {
+                csv.AppendLine(
+                    $"\"{inc.Id}\"," +
+                    $"\"{(inc.Title ?? "").Replace("\"", "\"\"")}\"," +
+                    $"\"{(inc.Description ?? "").Replace("\"", "\"\"")}\"," +
+                    $"\"{(inc.Location ?? "").Replace("\"", "\"\"")}\"," +
+                    $"\"{(inc.Department ?? "").Replace("\"", "\"\"")}\"," +
+                    $"\"{inc.Severity}\"," +
+                    $"\"{inc.Status}\"," +
+                    $"\"{inc.ReportedAt:yyyy-MM-dd HH:mm}\"," +
+                    $"\"{inc.UpdatedAt:yyyy-MM-dd HH:mm}\""
+                );
+            }
+
+            var fileName = $"Incident_Report_{DateTime.UtcNow:yyyyMMddHHmm}.csv";
+            var bytes = Encoding.UTF8.GetPreamble().Concat(Encoding.UTF8.GetBytes(csv.ToString())).ToArray();
+            return File(bytes, "text/csv", fileName);
         }
     }
 }
