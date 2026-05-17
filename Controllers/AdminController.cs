@@ -21,7 +21,7 @@ namespace SmartCityPulse.Controllers
             return HttpContext.Session.GetString("UserRole") == "Admin";
         }
 
-        // ==================== DASHBOARD (unchanged) ====================
+        // ==================== DASHBOARD ====================
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -37,16 +37,7 @@ namespace SmartCityPulse.Controllers
             var criticalIncidents = await _context.Incidents
                 .CountAsync(i => i.Severity == "Critical" && i.Status != "Resolved");
             var pendingIncidents = await _context.Incidents
-                .CountAsync(i => i.Status == "Open" || i.Status == "Pending");
-
-            var yesterdayStart = todayStart.AddDays(-1);
-            var yesterdayEnd = yesterdayStart.AddDays(1);
-            var totalYesterday = await _context.Incidents
-                .CountAsync(i => i.ReportedAt >= yesterdayStart && i.ReportedAt < yesterdayEnd);
-            var totalTrend = totalYesterday > 0 ? ((totalToday - totalYesterday) * 100 / totalYesterday) : 0;
-            var resolvedYesterday = await _context.Incidents
-                .CountAsync(i => i.Status == "Resolved" && i.UpdatedAt >= yesterdayStart && i.UpdatedAt < yesterdayEnd);
-            var resolvedTrend = resolvedYesterday > 0 ? ((resolvedToday - resolvedYesterday) * 100 / resolvedYesterday) : 0;
+                .CountAsync(i => i.Status == "Open" || i.Status == "In Progress");
 
             var recentIncidents = await _context.Incidents
                 .Find(_ => true)
@@ -54,31 +45,83 @@ namespace SmartCityPulse.Controllers
                 .Limit(5)
                 .ToListAsync();
 
-            var criticalPending = await _context.Incidents
-                .CountAsync(i => i.Severity == "Critical" && (i.Status == "Open" || i.Status == "Pending"));
-
             ViewBag.UserName = HttpContext.Session.GetString("UserName");
             ViewBag.TotalToday = totalToday;
             ViewBag.ResolvedToday = resolvedToday;
             ViewBag.CriticalIncidents = criticalIncidents;
             ViewBag.PendingIncidents = pendingIncidents;
-            ViewBag.TotalTrend = totalTrend;
-            ViewBag.ResolvedTrend = resolvedTrend;
             ViewBag.RecentIncidents = recentIncidents;
-            ViewBag.CriticalPending = criticalPending;
 
             return View();
         }
 
-        // ==================== OPERATOR MANAGEMENT (using Operators collection) ====================
+        // ==================== GET ALL INCIDENTS (AJAX) ====================
+        [HttpGet]
+        public async Task<IActionResult> GetAllIncidentsJson(string? status, string? severity)
+        {
+            if (!IsAdmin()) return Unauthorized();
+
+            var filterBuilder = Builders<Incident>.Filter;
+            var filter = filterBuilder.Empty;
+
+            if (!string.IsNullOrEmpty(status))
+                filter &= filterBuilder.Eq(i => i.Status, status);
+            if (!string.IsNullOrEmpty(severity))
+                filter &= filterBuilder.Eq(i => i.Severity, severity);
+
+            var incidents = await _context.Incidents.Find(filter)
+                .SortByDescending(i => i.ReportedAt)
+                .ToListAsync();
+
+            return Json(incidents);
+        }
+
+        // ==================== INCIDENT DETAIL ====================
+        [HttpGet]
+        public async Task<IActionResult> IncidentDetail(string id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+
+            var incident = await _context.Incidents.Find(i => i.Id == id).FirstOrDefaultAsync();
+            if (incident == null) return NotFound();
+
+            ViewBag.UserName = HttpContext.Session.GetString("UserName");
+            return View(incident);
+        }
+
+        // ==================== UPDATE STATUS ====================
+        [HttpPost]
+        public async Task<IActionResult> UpdateStatus(string id, string status)
+        {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+
+            var update = Builders<Incident>.Update
+                .Set(i => i.Status, status)
+                .Set(i => i.UpdatedAt, DateTime.UtcNow);
+
+            await _context.Incidents.UpdateOneAsync(i => i.Id == id, update);
+            TempData["Success"] = "Status updated successfully!";
+            return RedirectToAction("IncidentDetail", new { id });
+        }
+
+        // ==================== DELETE INCIDENT ====================
+        [HttpPost]
+        public async Task<IActionResult> DeleteIncident(string id)
+        {
+            if (!IsAdmin()) return RedirectToAction("Login", "Account");
+
+            await _context.Incidents.DeleteOneAsync(i => i.Id == id);
+            TempData["Success"] = "Incident deleted successfully!";
+            return RedirectToAction("Index");
+        }
+
+        // ==================== OPERATOR MANAGEMENT ====================
         [HttpGet]
         public async Task<IActionResult> GetOperatorsJson()
         {
             if (!IsAdmin()) return Unauthorized();
 
-            // Now fetching from Operators collection – automatically only Operators, no Admin
             var operators = await _context.Operators.Find(_ => true).ToListAsync();
-            // Hide passwords
             operators.ForEach(o => o.PasswordHash = null);
             return Json(operators);
         }
@@ -92,13 +135,12 @@ namespace SmartCityPulse.Controllers
                 string.IsNullOrEmpty(newOperator.PasswordHash))
                 return Json(new { success = false, message = "Name, Email, and Password are required." });
 
-            // Check both Users and Operators collections for email uniqueness
             var userExists = await _context.Users.Find(u => u.Email == newOperator.Email).AnyAsync();
             var opExists = await _context.Operators.Find(o => o.Email == newOperator.Email).AnyAsync();
             if (userExists || opExists)
                 return Json(new { success = false, message = "Email already registered." });
 
-            newOperator.Role = "Operator";        // force role
+            newOperator.Role = "Operator";
             newOperator.CreatedAt = DateTime.UtcNow;
 
             await _context.Operators.InsertOneAsync(newOperator);
@@ -117,7 +159,7 @@ namespace SmartCityPulse.Controllers
 
             existing.Name = updated.Name;
             existing.Email = updated.Email;
-            existing.Role = "Operator";       // ensure role stays Operator
+            existing.Role = "Operator";
             existing.Phone = updated.Phone;
             existing.Department = updated.Department;
             if (!string.IsNullOrEmpty(updated.PasswordHash))
@@ -136,7 +178,7 @@ namespace SmartCityPulse.Controllers
             return Json(new { success = true, message = "Operator deleted." });
         }
 
-        // ==================== ANALYTICS (unchanged) ====================
+        // ==================== ANALYTICS ====================
         [HttpGet]
         public async Task<IActionResult> GetAnalyticsJson()
         {

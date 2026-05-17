@@ -52,17 +52,22 @@ namespace SmartCityPulse.Controllers
 
         private void SetSession(AppUser user)
         {
-            HttpContext.Session.SetString("UserId", user.Id);
-            HttpContext.Session.SetString("UserName", user.Name);
-            HttpContext.Session.SetString("UserEmail", user.Email);
-            HttpContext.Session.SetString("UserRole", user.Role);
+            HttpContext.Session.SetString("UserId", user.Id ?? "");
+            HttpContext.Session.SetString("UserName", user.Name ?? "");
+            HttpContext.Session.SetString("UserEmail", user.Email ?? "");
+            HttpContext.Session.SetString("UserRole", user.Role ?? "");
+            // ✅ Department add karo
+            HttpContext.Session.SetString("UserDepartment", user.Department ?? "");
         }
 
         private IActionResult RedirectByRole(string role)
         {
-            if (role == "Admin") return RedirectToAction("Index", "Admin");
-            else if (role == "Operator") return RedirectToAction("Index", "Operator"); // You'll create OperatorController later
-            else return RedirectToAction("Index", "Home");
+            if (role == "Admin")
+                return RedirectToAction("Index", "Admin");
+            else if (role == "Operator")
+                return RedirectToAction("Dashboard", "Operator"); // ✅ Dashboard hai Index nahi
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         // ==================== REGISTER (unchanged, only for Citizens) ====================
