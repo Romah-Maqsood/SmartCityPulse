@@ -27,11 +27,14 @@ namespace SmartCityPulse.Models
         [BsonElement("severity")]
         public string Severity { get; set; } = "Medium";
 
-        [BsonElement("department")]      // ✅ YEH PROPERTY ADD KARO
-        public string Department { get; set; } = "Unassigned";
-
         [BsonElement("status")]
         public string Status { get; set; } = "Open";
+
+        [BsonElement("department")]
+        public string Department { get; set; } = string.Empty;  // ✅ SIRF YAHI
+
+        [BsonElement("reportedBy")]
+        public string ReportedBy { get; set; } = string.Empty;
 
         [BsonElement("reportedAt")]
         public DateTime ReportedAt { get; set; } = DateTime.UtcNow;

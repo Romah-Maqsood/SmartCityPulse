@@ -2,14 +2,8 @@ using SmartCityPulse.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// ✅ MongoDB Context – manually provide connection strings from config
-builder.Services.AddSingleton(sp =>
-{
-    var config = sp.GetRequiredService<IConfiguration>();
-    var connStr = config["MongoDB:ConnectionString"];
-    var dbName = config["MongoDB:DatabaseName"];
-    return new MongoDbContext(connStr, dbName);
-});
+// ✅ MongoDB Context - Simple way
+builder.Services.AddSingleton<MongoDbContext>();  // Auto-detects IConfiguration
 
 // Add SignalR
 builder.Services.AddSignalR();
@@ -39,10 +33,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.UseSession();          // <-- Session comes after Routing, before Authorization
+app.UseSession();
 app.UseAuthorization();
-
-// app.MapHub<SmartCityPulse.Hubs.CityHub>("/cityHub");   // Jab SignalR implement karo tab enable karna
 
 app.MapControllerRoute(
     name: "default",

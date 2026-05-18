@@ -1,6 +1,7 @@
-﻿@{
+﻿@model SmartCityPulse.Models.Incident
+@{
+    ViewData["Title"] = "Report Incident";
     Layout = null;
-    ViewData["Title"] = "Report Incident - Smart Civic Alert";
 }
 
 <!DOCTYPE html>
@@ -11,167 +12,167 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            min-height: 100vh;
-            color: white;
-        }
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+                color: #FFFFFF;
+                min-height: 100vh;
+            }
 
-        .navbar {
-            background-color: #1E293B;
-            border-bottom: 2px solid #3B82F6;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+            .navbar {
+                background-color: #1E293B;
+                border-bottom: 2px solid #3B82F6;
+                padding: 1rem 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-        .navbar-brand {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
+            .navbar-brand {
+                color: white;
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-decoration: none;
+            }
 
-            .navbar-brand span {
+                .navbar-brand span {
+                    color: #3B82F6;
+                }
+
+            .nav-links a {
+                color: #94A3B8;
+                text-decoration: none;
+                margin-left: 1.5rem;
+            }
+
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+            }
+
+            .card {
+                background: #1E293B;
+                border: 1px solid #334155;
+                border-radius: 16px;
+                padding: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+                margin-bottom: 1.5rem;
                 color: #3B82F6;
             }
 
-        .nav-links a {
-            color: #94A3B8;
-            text-decoration: none;
-            margin-left: 1.5rem;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: #1E293B;
-            border-radius: 24px;
-            border: 1px solid #334155;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: white;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        label {
-            display: block;
-            color: #94A3B8;
-            margin-bottom: 0.5rem;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #0F172A;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-        }
-
-            input:focus, select:focus, textarea:focus {
-                outline: none;
-                border-color: #3B82F6;
+            .form-group {
+                margin-bottom: 1rem;
             }
 
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
+                .form-group label {
+                    display: block;
+                    margin-bottom: 0.5rem;
+                    color: #94A3B8;
+                }
 
-        .btn-submit {
-            width: 100%;
-            padding: 0.875rem;
-            background-color: #3B82F6;
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-            .btn-submit:hover {
-                background-color: #2563EB;
+            input, select, textarea {
+                width: 100%;
+                padding: 0.75rem;
+                background: #0F172A;
+                border: 1px solid #334155;
+                border-radius: 8px;
+                color: white;
+                font-size: 1rem;
             }
 
-        .alert-success {
-            background-color: #14532D;
-            color: #BBF7D0;
-            padding: 0.75rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid #22C55E;
-        }
+                input:focus, select:focus, textarea:focus {
+                    outline: none;
+                    border-color: #3B82F6;
+                }
+
+            .btn-submit {
+                background: #3B82F6;
+                color: white;
+                border: none;
+                padding: 0.75rem 1.5rem;
+                border-radius: 8px;
+                font-size: 1rem;
+                cursor: pointer;
+                width: 100%;
+            }
+
+                .btn-submit:hover {
+                    background: #2563EB;
+                }
+
+            .alert-success {
+                background: #14532D;
+                color: #BBF7D0;
+                padding: 1rem;
+                border-radius: 12px;
+                margin-bottom: 1rem;
+            }
     </style>
 </head>
 <body>
-
     <nav class="navbar">
         <a href="/" class="navbar-brand">🔥 SMART CIVIC <span>ALERT</span></a>
         <div class="nav-links">
             <a href="/Home/Index">Home</a>
             <a href="/Account/Login">Login</a>
+            <a href="/Incident/Create">Report Incident</a>
+            <a href="/Incident/Index">All Incidents</a>
         </div>
     </nav>
 
     <div class="container">
-        <h1><i class="fas fa-exclamation-triangle"></i> Report Incident</h1>
+        <div class="card">
+            <h1 class="card-title"><i class="fas fa-exclamation-triangle"></i> Report an Incident</h1>
 
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <div class="alert-success">
-                <i class="fas fa-check-circle"></i> @TempData["SuccessMessage"]
-            </div>
-        }
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert-success">@TempData["SuccessMessage"]</div>
+            }
 
-        <form method="post" action="/Incident/Create">
-            <div class="form-group">
-                <label><i class="fas fa-heading"></i> Title</label>
-                <input type="text" name="Title" placeholder="e.g., Fire in Market" required />
-            </div>
-
-            <div class="form-group">
-                <label><i class="fas fa-align-left"></i> Description</label>
-                <textarea name="Description" placeholder="Describe the incident in detail..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label><i class="fas fa-location-dot"></i> Location</label>
-                <input type="text" name="Location" placeholder="e.g., Gulshan Chowrangi, Karachi" required />
-            </div>
-
-            <div class="form-group">
-                <label><i class="fas fa-chart-line"></i> Severity</label>
-                <select name="Severity" required>
-                    <option value="Low">🟢 Low</option>
-                    <option value="Medium">🟡 Medium</option>
-                    <option value="High">🟠 High</option>
-                    <option value="Critical">🔴 Critical</option>
-                </select>
-            </div>
-
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-paper-plane"></i> Submit Incident
-            </button>
-        </form>
+            <form method="post">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" name="Title" required />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="Description" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" name="Location" required />
+                </div>
+                <div class="form-group">
+                    <label>Severity</label>
+                    <select name="Severity">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Department (Optional)</label>
+                    <select name="Department">
+                        <option value="">Auto-assign</option>
+                        <option value="Fire">Fire</option>
+                        <option value="Police">Police</option>
+                        <option value="Rescue">Rescue</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Submit Report</button>
+            </form>
+        </div>
     </div>
-
 </body>
 </html>

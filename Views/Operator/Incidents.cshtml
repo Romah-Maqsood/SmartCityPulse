@@ -1,0 +1,108 @@
+﻿@model List<SmartCityPulse.Models.Incident>
+@{
+    ViewData["Title"] = "Incidents";
+    Layout = null;
+    string dept = ViewBag.Department ?? "";
+    string operatorName = ViewBag.OperatorName ?? "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Incidents - @dept</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/site.css" />
+    <style>
+        .main-content { margin-left: 280px; flex: 1; }
+        @@media (max-width: 768px) { .main-content { margin-left: 80px; } }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <div class="brand-icon">🚨</div>
+        <h2>SMART CIVIC</h2>
+        <span>ALERT SYSTEM</span>
+    </div>
+    <nav class="sidebar-nav">
+        <a href="/Operator/Dashboard" class="nav-item"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+        <a href="/Operator/Incidents" class="nav-item active"><i class="fas fa-list-alt"></i> <span>Incidents</span></a>
+        <a href="/Operator/CreateIncident" class="nav-item"><i class="fas fa-plus-circle"></i> <span>Create Incident</span></a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="dept-badge"><i class="fas fa-building"></i> @dept Department</div>
+        <a href="/Account/Logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+    </div>
+</aside>
+
+<div class="main-content">
+    <div class="topbar">
+        <div>
+            <h1>Incidents <span class="count-badge">@Model.Count</span></h1>
+            <p>@dept — All incidents assigned to your department</p>
+        </div>
+        <div class="user-profile"><i class="fas fa-user-circle"></i> @operatorName</div>
+    </div>
+
+    <div class="content-area" style="padding: 32px;">
+        <div class="filter-bar">
+            <form method="get" action="/Operator/Incidents">
+                <select name="status">
+                    <option value="">All Status</option>
+                    <option value="Open" selected="@(ViewBag.SelectedStatus == "Open")">Open</option>
+                    <option value="In Progress" selected="@(ViewBag.SelectedStatus == "In Progress")">In Progress</option>
+                    <option value="Resolved" selected="@(ViewBag.SelectedStatus == "Resolved")">Resolved</option>
+                </select>
+                <select name="severity">
+                    <option value="">All Severity</option>
+                    <option value="Critical" selected="@(ViewBag.SelectedSeverity == "Critical")">Critical</option>
+                    <option value="High" selected="@(ViewBag.SelectedSeverity == "High")">High</option>
+                    <option value="Medium" selected="@(ViewBag.SelectedSeverity == "Medium")">Medium</option>
+                    <option value="Low" selected="@(ViewBag.SelectedSeverity == "Low")">Low</option>
+                </select>
+                <button type="submit" class="btn-filter"><i class="fas fa-filter"></i> Apply Filter</button>
+            </form>
+            <a href="/Operator/CreateIncident" class="btn-primary" style="margin-left:auto;"><i class="fas fa-plus"></i> New Incident</a>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr><th>Title</th><th>Location</th><th>Severity</th><th>Status</th><th>Reported By</th><th>Date</th><th>Action</th></tr>
+                </thead>
+                <tbody>
+                    @if (!Model.Any())
+                    {
+                        <tr><td colspan="7"><div class="empty-state"><i class="fas fa-inbox"></i>No incidents found.</div></td></tr>
+                    }
+                    else
+                    {
+                        @foreach (var i in Model)
+                        {
+                            <tr>
+                                <td><strong>@i.Title</strong></td>
+                                <td><i class="fas fa-map-marker-alt" style="color:#3B82F6;margin-right:6px;"></i>@i.Location</td>
+                                <td><span class="badge badge-@i.Severity.ToLower()">@i.Severity</span></td>
+                                <td>
+                                    @{
+                                        var sc = i.Status == "Open" ? "status-open" : i.Status == "In Progress" ? "status-inprogress" : "status-resolved";
+                                    }
+                                    <span class="@sc">@i.Status</span>
+                                </td>
+                                <td style="color:#94A3B8;">@i.ReportedBy</td>
+                                <td style="color:#94A3B8;font-size:13px;">@i.ReportedAt.ToString("dd MMM yyyy")</td>
+                                <td><a href="/Operator/IncidentDetail/@i.Id" class="btn-detail"><i class="fas fa-eye"></i> View</a></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
