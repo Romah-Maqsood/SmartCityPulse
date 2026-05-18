@@ -27,6 +27,7 @@ C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\SmartCityPuls
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\SmartCityPulse.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\SmartCityPulse.pdb
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\CsvHelper.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\DnsClient.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Google.Api.CommonProtos.dll
@@ -44,6 +45,7 @@ C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Grpc.Auth.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Grpc.Core.Api.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Grpc.Net.Client.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Grpc.Net.Common.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\iTextSharp.LGPLv2.Core.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Microsoft.Extensions.Diagnostics.Abstractions.dll
@@ -64,6 +66,7 @@ C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\MongoDB.Drive
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\QuestPDF.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\SharpCompress.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\SkiaSharp.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\Snappier.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\System.CodeDom.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\System.Collections.Immutable.dll
@@ -107,6 +110,10 @@ C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-x86\native\libwinpthread-1.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-x86\native\qpdf.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-x86\native\zlib1.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\osx\native\libSkiaSharp.dylib
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-arm64\native\libSkiaSharp.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-x64\native\libSkiaSharp.dll
+C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win-x86\native\libSkiaSharp.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\bin\Debug\net8.0\runtimes\win\lib\net7.0\System.Management.dll
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\obj\Debug\net8.0\SmartCityPulse.csproj.AssemblyReference.cache
 C:\Users\taqde\source\repos\SmartCivicAlertSystem\obj\Debug\net8.0\rpswa.dswa.cache.json

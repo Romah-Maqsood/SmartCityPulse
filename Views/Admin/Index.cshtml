@@ -17,7 +17,7 @@
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #0F172A; color: #FFFFFF; display: flex; min-height: 100vh; }
         .sidebar { width: 280px; background: linear-gradient(180deg, #0F172A 0%, #1E293B 100%); border-right: 1px solid #334155; display: flex; flex-direction: column; position: fixed; height: 100vh; z-index: 100; }
         .sidebar-brand { padding: 28px 24px; border-bottom: 1px solid #334155; }
-        .sidebar-brand .brand-icon { font-size: 32px; margin-bottom: 8px; color: #3B82F6; }
+        .sidebar-brand i { font-size: 32px; margin-bottom: 8px; color: #3B82F6; }
         .sidebar-brand h2 { font-size: 18px; font-weight: 700; color: #FFFFFF; }
         .sidebar-brand span { color: #3B82F6; font-size: 12px; }
         .sidebar-nav { padding: 20px 0; flex: 1; }
@@ -34,8 +34,14 @@
         .welcome-text h1 { font-size: 24px; font-weight: 700; }
         .welcome-text h1 span { color: #3B82F6; }
         .welcome-text p { font-size: 14px; color: #94A3B8; margin-top: 4px; }
-        .user-profile { display: flex; align-items: center; gap: 12px; background: rgba(255, 255, 255, 0.05); padding: 8px 20px; border-radius: 40px; border: 1px solid #334155; }
-        .user-profile i { color: #3B82F6; }
+        .user-menu { position: relative; }
+        .user-name { display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 8px 20px; background: rgba(255,255,255,0.05); border-radius: 40px; border: 1px solid #334155; }
+        .user-name i { color: #3B82F6; }
+        .dropdown-menu { display: none; position: absolute; top: 100%; right: 0; background: #1E293B; border: 1px solid #334155; border-radius: 8px; margin-top: 8px; min-width: 150px; z-index: 200; }
+        .dropdown-menu.active { display: block; }
+        .dropdown-menu a { display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: #94A3B8; text-decoration: none; font-size: 14px; }
+        .dropdown-menu a:hover { background: #334155; color: white; }
+
         .content-area { padding: 32px; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 32px; }
@@ -77,6 +83,8 @@
         .btn-view:hover { background: #3B82F6; color: white; border-color: #3B82F6; }
         .btn-primary { background: #3B82F6; color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 600; transition: all 0.2s; box-shadow: 0 4px 6px rgba(59,130,246,0.3); }
         .btn-primary:hover { background: #2563EB; transform: translateY(-1px); }
+        .btn-secondary { background: #334155; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-weight: 500; }
+        .btn-secondary:hover { background: #475569; }
         .empty-state { text-align: center; padding: 60px; color: #94A3B8; }
         .empty-state i { font-size: 48px; margin-bottom: 16px; display: block; }
 
@@ -104,22 +112,30 @@
         .report-form { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
         .report-form label { color: #94A3B8; margin-bottom: 5px; display: block; }
         .report-form input, .report-form select { width: 100%; padding: 10px; background: #0F172A; border: 1px solid #334155; color: white; border-radius: 8px; }
-        .report-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 20px; }
+        .report-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px; }
         .report-card { background: #1E293B; border: 1px solid #334155; border-radius: 16px; padding: 30px; text-align: center; transition: all 0.3s; }
         .report-card:hover { border-color: #3B82F6; transform: translateY(-4px); }
         .report-card i { font-size: 40px; color: #3B82F6; margin-bottom: 15px; }
         .report-card h3 { margin-bottom: 10px; font-size: 18px; }
         .report-card p { color: #94A3B8; font-size: 14px; margin-bottom: 20px; }
         .report-card .btn-primary { width: 100%; }
+        .preview-count { color: #22C55E; font-weight: 600; margin: 10px 0; }
 
         .chart-error { color: #EF4444; text-align: center; padding: 20px; }
+
+        /* Download Dropdown */
+        .download-dropdown { position: relative; display: inline-block; }
+        .download-menu { display: none; position: absolute; top: 100%; left: 0; background: #1E293B; border: 1px solid #334155; border-radius: 8px; margin-top: 4px; min-width: 160px; z-index: 300; }
+        .download-menu a { display: flex; align-items: center; gap: 8px; padding: 10px 16px; color: #94A3B8; text-decoration: none; }
+        .download-menu a:hover { background: #334155; color: white; }
 
         @@media (max-width: 768px) {
             .sidebar { width: 100%; position: relative; height: auto; }
             .main-content { margin-left: 0; }
             .stats-grid { grid-template-columns: repeat(2, 1fr); }
             .charts-section { grid-template-columns: 1fr; }
-            .report-cards, .report-form { grid-template-columns: 1fr; }
+            .report-cards { grid-template-columns: 1fr; }
+            .report-form { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -127,7 +143,7 @@
 
 <aside class="sidebar">
     <div class="sidebar-brand">
-        <div class="brand-icon">🏙️</div>
+        <i class="fas fa-city"></i>
         <h2>SMART CIVIC</h2>
         <span>ALERT SYSTEM</span>
     </div>
@@ -135,6 +151,7 @@
         <a class="nav-item active" data-page="dashboard" onclick="showSection('dashboard')"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
         <a class="nav-item" data-page="incidents" onclick="showSection('incidents')"><i class="fas fa-list-alt"></i> Incidents</a>
         <a class="nav-item" data-page="operators" onclick="showSection('operators')"><i class="fas fa-users"></i> Operators</a>
+        <a class="nav-item" data-page="citizens" onclick="showSection('citizens')"><i class="fas fa-user"></i> Citizens</a>
         <a class="nav-item" data-page="analytics" onclick="showSection('analytics')"><i class="fas fa-chart-line"></i> Analytics</a>
         <a class="nav-item" data-page="reports" onclick="showSection('reports')"><i class="fas fa-file-alt"></i> Reports</a>
     </nav>
@@ -149,9 +166,16 @@
             <h1>Welcome, <span>@userName</span></h1>
             <p>Admin Dashboard — Manage your city's incident response system</p>
         </div>
-        <div class="user-profile">
-            <i class="fas fa-user-shield"></i>
-            <span>@userName</span>
+        <div class="user-menu">
+            <div class="user-name" onclick="toggleDropdown()">
+                <i class="fas fa-user-shield"></i>
+                <span>@userName</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="dropdown-menu" id="adminDropdown">
+                <a href="#"><i class="fas fa-user"></i> Profile</a>
+                <a href="/Account/Logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
         </div>
     </div>
 
@@ -159,35 +183,15 @@
         <!-- DASHBOARD SECTION -->
         <div id="dashboardSection">
             <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-header"><span>Total Today</span><div class="stat-icon"><i class="fas fa-calendar-day"></i></div></div>
-                    <h2>@ViewBag.TotalToday</h2><p>Incidents reported today</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header"><span>Resolved Today</span><div class="stat-icon"><i class="fas fa-check-circle"></i></div></div>
-                    <h2>@ViewBag.ResolvedToday</h2><p>Successfully resolved</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header"><span>Critical Open</span><div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div></div>
-                    <h2>@ViewBag.CriticalIncidents</h2><p>Critical incidents pending</p>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-header"><span>Pending</span><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div></div>
-                    <h2>@ViewBag.PendingIncidents</h2><p>Open or in progress</p>
-                </div>
+                <div class="stat-card"><div class="stat-header"><span>Total Today</span><div class="stat-icon"><i class="fas fa-calendar-day"></i></div></div><h2>@ViewBag.TotalToday</h2><p>Incidents reported today</p></div>
+                <div class="stat-card"><div class="stat-header"><span>Resolved Today</span><div class="stat-icon"><i class="fas fa-check-circle"></i></div></div><h2>@ViewBag.ResolvedToday</h2><p>Successfully resolved</p></div>
+                <div class="stat-card"><div class="stat-header"><span>Critical Open</span><div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div></div><h2>@ViewBag.CriticalIncidents</h2><p>Critical incidents pending</p></div>
+                <div class="stat-card"><div class="stat-header"><span>Pending</span><div class="stat-icon"><i class="fas fa-hourglass-half"></i></div></div><h2>@ViewBag.PendingIncidents</h2><p>Open or in progress</p></div>
             </div>
 
             <div class="charts-section">
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-chart-line"></i> Last 7 Days Trend</div>
-                    <div class="chart-canvas-wrapper"><canvas id="trendChart"></canvas></div>
-                    <div id="trendChartError" class="chart-error hide"></div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-chart-pie"></i> Severity Distribution</div>
-                    <div class="chart-canvas-wrapper"><canvas id="severityChart"></canvas></div>
-                    <div id="severityChartError" class="chart-error hide"></div>
-                </div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-line"></i> Last 7 Days Trend</div><div class="chart-canvas-wrapper"><canvas id="trendChart"></canvas></div><div id="trendChartError" class="chart-error hide"></div></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-pie"></i> Severity Distribution</div><div class="chart-canvas-wrapper"><canvas id="severityChart"></canvas></div><div id="severityChartError" class="chart-error hide"></div></div>
             </div>
 
             <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
@@ -247,82 +251,79 @@
             </div>
         </div>
 
+        <!-- CITIZENS SECTION -->
+        <div id="citizensSection" class="hide">
+            <h2><i class="fas fa-user"></i> Citizens Management</h2>
+            <div class="table-container" style="margin-top:20px;">
+                <table>
+                    <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Actions</th></tr></thead>
+                    <tbody id="citizensTable"></tbody>
+                </table>
+            </div>
+        </div>
+
         <!-- ANALYTICS SECTION -->
         <div id="analyticsSection" class="hide">
             <h2><i class="fas fa-chart-line"></i> Analytics Dashboard</h2>
             <div class="charts-section">
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-building"></i> Department-wise Incidents</div>
-                    <div class="chart-canvas-wrapper"><canvas id="deptChart"></canvas></div>
-                    <div id="deptChartError" class="chart-error hide"></div>
-                </div>
-                <div class="chart-card">
-                    <div class="chart-title"><i class="fas fa-chart-bar"></i> Severity Overview</div>
-                    <div class="chart-canvas-wrapper"><canvas id="analyticsSeverityChart"></canvas></div>
-                    <div id="analyticsSeverityError" class="chart-error hide"></div>
-                </div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-building"></i> Department-wise Incidents</div><div class="chart-canvas-wrapper"><canvas id="deptChart"></canvas></div><div id="deptChartError" class="chart-error hide"></div></div>
+                <div class="chart-card"><div class="chart-title"><i class="fas fa-chart-bar"></i> Severity Overview</div><div class="chart-canvas-wrapper"><canvas id="analyticsSeverityChart"></canvas></div><div id="analyticsSeverityError" class="chart-error hide"></div></div>
             </div>
-            <div class="chart-card" style="margin-top:20px;">
-                <div class="chart-title"><i class="fas fa-chart-line"></i> Weekly Trend (Total vs Resolved)</div>
-                <div class="chart-canvas-wrapper"><canvas id="trendDetailChart"></canvas></div>
-                <div id="trendDetailError" class="chart-error hide"></div>
-            </div>
+            <div class="chart-card" style="margin-top:20px;"><div class="chart-title"><i class="fas fa-chart-line"></i> Weekly Trend (Total vs Resolved)</div><div class="chart-canvas-wrapper"><canvas id="trendDetailChart"></canvas></div><div id="trendDetailError" class="chart-error hide"></div></div>
         </div>
 
-        <!-- REPORTS SECTION -->
+        <!-- REPORTS SECTION (Enhanced) -->
         <div id="reportsSection" class="hide">
             <h2><i class="fas fa-file-alt"></i> Generate Reports</h2>
-            <p style="color:#94A3B8; margin:10px 0 20px;">Export filtered incident reports as CSV. Leave fields blank to include all.</p>
+            <p style="color:#94A3B8; margin:10px 0 20px;">Export filtered incident reports in CSV, JSON or PDF format. Use the custom filters or quick presets.</p>
 
-            <div class="chart-card" style="margin-bottom:20px;">
-                <h3 style="margin-bottom:15px;">Custom Report Filters</h3>
+            <!-- Custom Report (TOP) -->
+            <div class="chart-card" style="margin-bottom: 30px;">
+                <h3 style="margin-bottom:15px;"><i class="fas fa-sliders-h"></i> Custom Report</h3>
                 <div class="report-form">
-                    <div>
-                        <label>Start Date</label>
-                        <input type="date" id="reportStartDate" />
-                    </div>
-                    <div>
-                        <label>End Date</label>
-                        <input type="date" id="reportEndDate" />
-                    </div>
-                    <div>
-                        <label>Department</label>
-                        <select id="reportDepartment">
-                            <option value="">All Departments</option>
-                            <option value="Fire Department">Fire</option>
-                            <option value="Police Department">Police</option>
-                            <option value="Rescue Department">Rescue</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label>Severity</label>
-                        <select id="reportSeverity">
-                            <option value="">All Severities</option>
-                            <option value="Critical">Critical</option>
-                            <option value="High">High</option>
-                            <option value="Medium">Medium</option>
-                            <option value="Low">Low</option>
-                        </select>
+                    <div><label>Start Date</label><input type="date" id="reportStartDate" /></div>
+                    <div><label>End Date</label><input type="date" id="reportEndDate" /></div>
+                    <div><label>Department</label><select id="reportDepartment"><option value="">All Departments</option><option value="Fire Department">Fire</option><option value="Police Department">Police</option><option value="Rescue Department">Rescue</option></select></div>
+                    <div><label>Severity</label><select id="reportSeverity"><option value="">All Severities</option><option value="Critical">Critical</option><option value="High">High</option><option value="Medium">Medium</option><option value="Low">Low</option></select></div>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center; margin: 10px 0 15px;">
+                    <button class="btn-primary" onclick="previewCount()"><i class="fas fa-eye"></i> Preview Count</button>
+                    <span id="previewResult" class="preview-count"></span>
+                </div>
+                <!-- Download Dropdown -->
+                <div class="download-dropdown">
+                    <button class="btn-primary" onclick="toggleDownloadMenu()"><i class="fas fa-download"></i> Download ▾</button>
+                    <div class="download-menu" id="downloadMenu">
+                        <a href="#" onclick="downloadCustomReport('csv'); return false;"><i class="fas fa-file-csv"></i> CSV</a>
+                        <a href="#" onclick="downloadCustomReport('json'); return false;"><i class="fas fa-file-code"></i> JSON</a>
+                        <a href="#" onclick="downloadCustomReport('pdf'); return false;"><i class="fas fa-file-pdf"></i> PDF</a>
                     </div>
                 </div>
-                <button class="btn-primary" onclick="generateCustomReport()"><i class="fas fa-download"></i> Download CSV</button>
             </div>
 
+            <!-- Quick Presets (BELOW) -->
+            <h3 style="margin: 20px 0 15px;">Quick Presets</h3>
             <div class="report-cards">
+                <div class="report-card">
+                    <i class="fas fa-calendar-day"></i>
+                    <h3>Today's Report</h3>
+                    <p>All incidents reported today.</p>
+                    <button class="btn-primary" onclick="downloadQuickReport('today')"><i class="fas fa-download"></i> Download CSV</button>
+                </div>
                 <div class="report-card">
                     <i class="fas fa-calendar-week"></i>
                     <h3>Weekly Report</h3>
                     <p>Last 7 days summary.</p>
-                    <button class="btn-primary" onclick="downloadReport('weekly')">Download CSV</button>
+                    <button class="btn-primary" onclick="downloadQuickReport('weekly')"><i class="fas fa-download"></i> Download CSV</button>
                 </div>
                 <div class="report-card">
-                    <i class="fas fa-calendar-month"></i>
+                    <i class="fas fa-calendar-alt"></i>   <!-- CHANGED: free icon -->
                     <h3>Monthly Report</h3>
                     <p>Last 30 days overview.</p>
-                    <button class="btn-primary" onclick="downloadReport('monthly')">Download CSV</button>
+                    <button class="btn-primary" onclick="downloadQuickReport('monthly')"><i class="fas fa-download"></i> Download CSV</button>
                 </div>
             </div>
-            <p style="margin-top:20px; color:#64748B; text-align:center;"><i class="fas fa-cogs"></i> PDF export coming soon.</p>
+            <p style="margin-top:20px; color:#64748B; text-align:center;"><i class="fas fa-cogs"></i> PDF export requires iTextSharp. All formats available instantly.</p>
         </div>
     </div>
 </div>
@@ -339,23 +340,24 @@
     </div>
 </div>
 
-<!-- ADD/EDIT OPERATOR MODAL -->
+<!-- ADD/EDIT MODAL (used for both Operators and Citizens) -->
 <div id="operatorModal" class="modal">
     <div class="modal-content">
         <h3 id="modalTitle">Add New Operator</h3>
-        <input type="hidden" id="operatorId" />
+        <input type="hidden" id="entityType" value="operator" />
+        <input type="hidden" id="entityId" />
         <input type="text" id="opName" placeholder="Full Name" />
         <input type="email" id="opEmail" placeholder="Email" />
         <input type="text" id="opPhone" placeholder="Phone" />
-        <select id="opDepartment">
+        <select id="opDepartment" style="display:block;">
             <option value="">Select Department</option>
             <option value="Fire">Fire Department</option>
             <option value="Police">Police Department</option>
             <option value="Rescue">Rescue Department</option>
         </select>
-        <input type="password" id="opPassword" placeholder="Password" />
+        <input type="password" id="opPassword" placeholder="Password (leave blank to keep unchanged)" />
         <div class="modal-buttons">
-            <button class="btn-primary" onclick="saveOperator()">Save</button>
+            <button class="btn-primary" onclick="saveEntity()">Save</button>
             <button class="btn-cancel" onclick="closeModal('operatorModal')">Cancel</button>
         </div>
     </div>
@@ -366,6 +368,18 @@
     let confirmCallback = null;
     let dashboardChartsLoaded = false;
     let analyticsChartsLoaded = false;
+    let allCitizens = [];
+    let allOperators = [];
+
+    // ========== TOPBAR DROPDOWN ==========
+    function toggleDropdown() {
+        document.getElementById('adminDropdown').classList.toggle('active');
+    }
+    window.addEventListener('click', function(e) {
+        if (!e.target.closest('.user-menu')) {
+            document.getElementById('adminDropdown').classList.remove('active');
+        }
+    });
 
     // ========== SECTION NAVIGATION ==========
     function showSection(section) {
@@ -373,29 +387,21 @@
             item.classList.remove('active');
             if (item.getAttribute('data-page') === section) item.classList.add('active');
         });
-        ['dashboard','incidents','operators','analytics','reports'].forEach(s => {
+        ['dashboard','incidents','operators','citizens','analytics','reports'].forEach(s => {
             document.getElementById(s + 'Section').classList.add('hide');
         });
         document.getElementById(section + 'Section').classList.remove('hide');
 
         if (section === 'incidents') loadAllIncidents();
         if (section === 'operators') loadOperators();
+        if (section === 'citizens') loadCitizens();
         if (section === 'analytics') {
-            if (!analyticsChartsLoaded) {
-                loadAnalytics();
-            } else {
-                if (window.deptChart) window.deptChart.resize();
-                if (window.analyticsSevChart) window.analyticsSevChart.resize();
-                if (window.trendDetailChart) window.trendDetailChart.resize();
-            }
+            if (!analyticsChartsLoaded) loadAnalytics();
+            else { if (window.deptChart) window.deptChart.resize(); if (window.analyticsSevChart) window.analyticsSevChart.resize(); if (window.trendDetailChart) window.trendDetailChart.resize(); }
         }
         if (section === 'dashboard') {
-            if (!dashboardChartsLoaded) {
-                loadDashboardCharts();
-            } else {
-                if (window.trendChart) window.trendChart.resize();
-                if (window.severityChart) window.severityChart.resize();
-            }
+            if (!dashboardChartsLoaded) loadDashboardCharts();
+            else { if (window.trendChart) window.trendChart.resize(); if (window.severityChart) window.severityChart.resize(); }
         }
     }
 
@@ -404,29 +410,21 @@
         const canvas = document.getElementById(chartId);
         const errorDiv = document.getElementById(errorDivId);
         if (canvas) canvas.style.display = 'none';
-        if (errorDiv) {
-            errorDiv.classList.remove('hide');
-            errorDiv.innerText = message;
-        }
+        if (errorDiv) { errorDiv.classList.remove('hide'); errorDiv.innerText = message; }
     }
-
     function hideChartError(chartId, errorDivId) {
         const canvas = document.getElementById(chartId);
         const errorDiv = document.getElementById(errorDivId);
         if (canvas) canvas.style.display = 'block';
         if (errorDiv) errorDiv.classList.add('hide');
     }
-
-    // ========== SAFE DESTROY HELPER ==========
     function safeDestroy(chartInstance) {
-        if (chartInstance && typeof chartInstance.destroy === 'function') {
-            chartInstance.destroy();
-        }
+        if (chartInstance && typeof chartInstance.destroy === 'function') chartInstance.destroy();
     }
 
     // ========== DASHBOARD CHARTS ==========
     function loadDashboardCharts() {
-        fetch('/Admin/GetAnalyticsJson')
+        fetch('/Admin/GetAnalyticsJson', { credentials: 'same-origin' })
             .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
             .then(data => {
                 if (!data.trend || !data.severity) throw new Error('Invalid data format');
@@ -435,41 +433,20 @@
                 safeDestroy(window.trendChart);
                 window.trendChart = new Chart(trendCtx, {
                     type: 'line',
-                    data: {
-                        labels: data.trend.map(t => t.date),
-                        datasets: [{
-                            label: 'Incidents',
-                            data: data.trend.map(t => t.total),
-                            borderColor: '#3B82F6',
-                            backgroundColor: 'rgba(59,130,246,0.1)',
-                            fill: true,
-                            tension: 0.3
-                        }]
-                    },
+                    data: { labels: data.trend.map(t => t.date), datasets: [{ label: 'Incidents', data: data.trend.map(t => t.total), borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94A3B8' } } }, scales: { y: { ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } } }
                 });
-
                 hideChartError('severityChart', 'severityChartError');
                 const sevCtx = document.getElementById('severityChart').getContext('2d');
                 safeDestroy(window.severityChart);
                 window.severityChart = new Chart(sevCtx, {
                     type: 'doughnut',
-                    data: {
-                        labels: ['Critical', 'High', 'Medium', 'Low'],
-                        datasets: [{
-                            data: [data.severity.critical, data.severity.high, data.severity.medium, data.severity.low],
-                            backgroundColor: ['#EF4444', '#F97316', '#EAB308', '#22C55E']
-                        }]
-                    },
+                    data: { labels: ['Critical','High','Medium','Low'], datasets: [{ data: [data.severity.critical, data.severity.high, data.severity.medium, data.severity.low], backgroundColor: ['#EF4444','#F97316','#EAB308','#22C55E'] }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94A3B8' } } } }
                 });
                 dashboardChartsLoaded = true;
             })
-            .catch(err => {
-                console.error(err);
-                showChartError('trendChart', 'trendChartError', 'Could not load trend data: ' + err.message);
-                showChartError('severityChart', 'severityChartError', 'Could not load severity data: ' + err.message);
-            });
+            .catch(err => { console.error(err); showChartError('trendChart','trendChartError','Could not load trend data: '+err.message); showChartError('severityChart','severityChartError','Could not load severity data: '+err.message); });
     }
 
     // ========== INCIDENTS ==========
@@ -479,21 +456,16 @@
         let url = '/Admin/GetAllIncidentsJson';
         if (status || severity) url += `?status=${status}&severity=${severity}`;
         try {
-            const res = await fetch(url);
+            const res = await fetch(url, { credentials: 'same-origin' });
             const incidents = await res.json();
             const tbody = document.getElementById('allIncidentsTable');
             tbody.innerHTML = '';
-            if (!incidents.length) {
-                tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-folder-open"></i> No incidents found</td></tr>';
-                return;
-            }
+            if (!incidents.length) { tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><i class="fas fa-folder-open"></i> No incidents found</td></tr>'; return; }
             incidents.forEach(i => {
                 const row = tbody.insertRow();
                 row.innerHTML = `<td><strong>${escapeHtml(i.title)}</strong></td><td>${escapeHtml(i.location)}</td><td>${i.department || '-'}</td><td><span class="badge badge-${i.severity?.toLowerCase()}">${i.severity}</span></td><td><span class="status-${i.status?.toLowerCase().replace(' ', '')}">${i.status}</span></td><td>${new Date(i.reportedAt).toLocaleString()}</td><td><a href="/Admin/IncidentDetail/${i.id}" class="btn-view">View</a></td>`;
             });
-        } catch (err) {
-            console.error(err);
-        }
+        } catch (err) { console.error(err); }
     }
 
     function escapeHtml(text) {
@@ -503,74 +475,152 @@
     // ========== OPERATORS ==========
     async function loadOperators() {
         try {
-            const res = await fetch('/Admin/GetOperatorsJson');
-            const operators = await res.json();
-            const tbody = document.getElementById('operatorsTable');
-            tbody.innerHTML = '';
-            operators.forEach(op => {
-                const row = tbody.insertRow();
-                row.innerHTML = `<td>${escapeHtml(op.name)}</td><td>${escapeHtml(op.email)}</td><td>${escapeHtml(op.phone || '-')}</td><td>${op.department || '-'}</td><td class="action-buttons"><button class="btn-edit" onclick="editOperator('${op.id}', '${escapeHtml(op.name)}', '${escapeHtml(op.email)}', '${escapeHtml(op.phone || '')}', '${op.department || ''}')"><i class="fas fa-edit"></i> Edit</button><button class="btn-delete" onclick="deleteOperator('${op.id}')"><i class="fas fa-trash"></i> Delete</button></td>`;
-            });
-        } catch (err) {
-            console.error(err);
-        }
+            const res = await fetch('/Admin/GetOperatorsJson', { credentials: 'same-origin' });
+            allOperators = await res.json();
+            renderOperatorsTable(allOperators);
+        } catch (err) { console.error(err); }
+    }
+    function renderOperatorsTable(operators) {
+        const tbody = document.getElementById('operatorsTable');
+        tbody.innerHTML = '';
+        operators.forEach(op => {
+            const row = tbody.insertRow();
+            row.innerHTML = `<td>${escapeHtml(op.name)}</td><td>${escapeHtml(op.email)}</td><td>${escapeHtml(op.phone || '-')}</td><td>${op.department || '-'}</td><td class="action-buttons"><button class="btn-edit" onclick="editOperator('${op.id}')"><i class="fas fa-edit"></i> Edit</button><button class="btn-delete" onclick="deleteOperator('${op.id}')"><i class="fas fa-trash"></i> Delete</button></td>`;
+        });
     }
 
     function openAddOperatorModal() {
+        document.getElementById('entityType').value = 'operator';
+        document.getElementById('entityId').value = '';
         document.getElementById('modalTitle').innerText = 'Add New Operator';
-        document.getElementById('operatorId').value = '';
         document.getElementById('opName').value = '';
         document.getElementById('opEmail').value = '';
         document.getElementById('opPhone').value = '';
+        document.getElementById('opDepartment').style.display = 'block';
         document.getElementById('opDepartment').value = '';
         document.getElementById('opPassword').value = '';
         document.getElementById('operatorModal').classList.add('active');
     }
 
-    function editOperator(id, name, email, phone, dept) {
+    function editOperator(id) {
+        const op = allOperators.find(o => o.id === id);
+        if (!op) return;
+        document.getElementById('entityType').value = 'operator';
+        document.getElementById('entityId').value = op.id;
         document.getElementById('modalTitle').innerText = 'Edit Operator';
-        document.getElementById('operatorId').value = id;
-        document.getElementById('opName').value = name;
-        document.getElementById('opEmail').value = email;
-        document.getElementById('opPhone').value = phone;
-        document.getElementById('opDepartment').value = dept;
+        document.getElementById('opName').value = op.name || '';
+        document.getElementById('opEmail').value = op.email || '';
+        document.getElementById('opPhone').value = op.phone || '';
+        document.getElementById('opDepartment').style.display = 'block';
+        document.getElementById('opDepartment').value = op.department || '';
         document.getElementById('opPassword').value = '';
         document.getElementById('operatorModal').classList.add('active');
     }
 
-    async function saveOperator() {
-        const id = document.getElementById('operatorId').value;
-        const data = {
-            id: id,
-            name: document.getElementById('opName').value,
-            email: document.getElementById('opEmail').value,
-            phone: document.getElementById('opPhone').value,
-            department: document.getElementById('opDepartment').value,
-            passwordHash: document.getElementById('opPassword').value
-        };
-        const url = id ? '/Admin/UpdateOperator' : '/Admin/CreateOperator';
-        try {
-            const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
-            const result = await res.json();
-            alert(result.message);
-            closeModal('operatorModal');
-            loadOperators();
-        } catch (err) {
-            console.error(err);
-        }
-    }
-
-    function deleteOperator(id) {
-        showConfirmModal('Are you sure you want to delete this operator?', async () => {
+    async function deleteOperator(id) {
+        showConfirmModal('Delete this operator?', async () => {
             try {
-                const res = await fetch('/Admin/DeleteOperator', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) });
+                const res = await fetch('/Admin/DeleteOperator', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id }),
+                    credentials: 'same-origin'
+                });
                 const result = await res.json();
                 alert(result.message);
                 loadOperators();
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) { console.error(err); }
         });
+    }
+
+    // ========== CITIZENS ==========
+    async function loadCitizens() {
+        try {
+            const res = await fetch('/Admin/GetCitizensJson', { credentials: 'same-origin' });
+            allCitizens = await res.json();
+            renderCitizensTable(allCitizens);
+        } catch (err) { console.error(err); }
+    }
+    function renderCitizensTable(citizens) {
+        const tbody = document.getElementById('citizensTable');
+        tbody.innerHTML = '';
+        citizens.forEach(c => {
+            const row = tbody.insertRow();
+            row.innerHTML = `<td>${escapeHtml(c.name)}</td><td>${escapeHtml(c.email)}</td><td>${escapeHtml(c.phone || '-')}</td><td>${escapeHtml(c.role)}</td><td class="action-buttons"><button class="btn-edit" onclick="editCitizen('${c.id}')"><i class="fas fa-edit"></i> Edit</button><button class="btn-delete" onclick="deleteCitizen('${c.id}')"><i class="fas fa-trash"></i> Delete</button></td>`;
+        });
+    }
+
+    function editCitizen(id) {
+        const citizen = allCitizens.find(c => c.id === id);
+        if (!citizen) return;
+        document.getElementById('entityType').value = 'citizen';
+        document.getElementById('entityId').value = citizen.id;
+        document.getElementById('modalTitle').innerText = 'Edit Citizen';
+        document.getElementById('opName').value = citizen.name || '';
+        document.getElementById('opEmail').value = citizen.email || '';
+        document.getElementById('opPhone').value = citizen.phone || '';
+        document.getElementById('opDepartment').style.display = 'none';
+        document.getElementById('opPassword').value = '';
+        document.getElementById('operatorModal').classList.add('active');
+    }
+
+    async function deleteCitizen(id) {
+        showConfirmModal('Delete this citizen?', async () => {
+            try {
+                const res = await fetch('/Admin/DeleteCitizen', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: id }),
+                    credentials: 'same-origin'
+                });
+                const result = await res.json();
+                alert(result.message);
+                loadCitizens();
+            } catch (err) { console.error(err); }
+        });
+    }
+
+    // ========== GENERIC SAVE (handles both operator & citizen) ==========
+    async function saveEntity() {
+        const entityType = document.getElementById('entityType').value;
+        const id = document.getElementById('entityId').value;
+        const data = {
+            Id: id,
+            Name: document.getElementById('opName').value.trim(),
+            Email: document.getElementById('opEmail').value.trim(),
+            Phone: document.getElementById('opPhone').value.trim(),
+            PasswordHash: document.getElementById('opPassword').value,
+            Department: entityType === 'operator' ? document.getElementById('opDepartment').value : null,
+            Role: entityType === 'operator' ? 'Operator' : 'Citizen'
+        };
+
+        let url;
+        if (entityType === 'operator') {
+            url = id ? '/Admin/UpdateOperator?id=' + id : '/Admin/CreateOperator';
+        } else {
+            url = id ? '/Admin/UpdateCitizen?id=' + id : '/Admin/CreateCitizen';
+        }
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+                credentials: 'same-origin'
+            });
+            const result = await res.json();
+            if (result.success) {
+                alert(result.message);
+                closeModal('operatorModal');
+                if (entityType === 'operator') loadOperators();
+                else loadCitizens();
+            } else {
+                alert('Error: ' + result.message);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Network error');
+        }
     }
 
     function closeModal(modalId) { document.getElementById(modalId).classList.remove('active'); }
@@ -597,94 +647,139 @@
 
     // ========== ANALYTICS ==========
     function loadAnalytics() {
-        fetch('/Admin/GetAnalyticsJson')
+        fetch('/Admin/GetAnalyticsJson', { credentials: 'same-origin' })
             .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
             .then(data => {
                 if (!data.departments || !data.severity || !data.trend) throw new Error('Invalid data');
-
-                hideChartError('deptChart', 'deptChartError');
+                hideChartError('deptChart','deptChartError');
                 const deptCtx = document.getElementById('deptChart').getContext('2d');
                 safeDestroy(window.deptChart);
                 window.deptChart = new Chart(deptCtx, {
                     type: 'doughnut',
-                    data: {
-                        labels: data.departments.map(d => d.department),
-                        datasets: [{
-                            data: data.departments.map(d => d.count),
-                            backgroundColor: ['#EF4444', '#3B82F6', '#22C55E', '#F59E0B']
-                        }]
-                    },
+                    data: { labels: data.departments.map(d => d.department), datasets: [{ data: data.departments.map(d => d.count), backgroundColor: ['#EF4444','#3B82F6','#22C55E','#F59E0B'] }] },
                     options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94A3B8' } } } }
                 });
-
-                hideChartError('analyticsSeverityChart', 'analyticsSeverityError');
+                hideChartError('analyticsSeverityChart','analyticsSeverityError');
                 const sevBarCtx = document.getElementById('analyticsSeverityChart').getContext('2d');
                 safeDestroy(window.analyticsSevChart);
                 window.analyticsSevChart = new Chart(sevBarCtx, {
                     type: 'bar',
-                    data: {
-                        labels: ['Critical', 'High', 'Medium', 'Low'],
-                        datasets: [{
-                            label: 'Count',
-                            data: [data.severity.critical, data.severity.high, data.severity.medium, data.severity.low],
-                            backgroundColor: ['#EF4444', '#F97316', '#EAB308', '#22C55E']
-                        }]
-                    },
+                    data: { labels: ['Critical','High','Medium','Low'], datasets: [{ label: 'Count', data: [data.severity.critical, data.severity.high, data.severity.medium, data.severity.low], backgroundColor: ['#EF4444','#F97316','#EAB308','#22C55E'] }] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } }, plugins: { legend: { display: false } } }
                 });
-
-                hideChartError('trendDetailChart', 'trendDetailError');
+                hideChartError('trendDetailChart','trendDetailError');
                 const trendCtx = document.getElementById('trendDetailChart').getContext('2d');
                 safeDestroy(window.trendDetailChart);
                 window.trendDetailChart = new Chart(trendCtx, {
                     type: 'line',
-                    data: {
-                        labels: data.trend.map(t => t.date),
-                        datasets: [
-                            { label: 'Total', data: data.trend.map(t => t.total), borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 },
-                            { label: 'Resolved', data: data.trend.map(t => t.resolved), borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3 }
-                        ]
-                    },
+                    data: { labels: data.trend.map(t => t.date), datasets: [
+                        { label: 'Total', data: data.trend.map(t => t.total), borderColor: '#3B82F6', backgroundColor: 'rgba(59,130,246,0.1)', fill: true, tension: 0.3 },
+                        { label: 'Resolved', data: data.trend.map(t => t.resolved), borderColor: '#22C55E', backgroundColor: 'rgba(34,197,94,0.1)', fill: true, tension: 0.3 }
+                    ] },
                     options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#94A3B8' } }, x: { ticks: { color: '#94A3B8' } } }, plugins: { legend: { labels: { color: '#94A3B8' } } } }
                 });
                 analyticsChartsLoaded = true;
             })
             .catch(err => {
                 console.error(err);
-                showChartError('deptChart', 'deptChartError', 'Could not load department data: ' + err.message);
-                showChartError('analyticsSeverityChart', 'analyticsSeverityError', 'Could not load severity data: ' + err.message);
-                showChartError('trendDetailChart', 'trendDetailError', 'Could not load trend data: ' + err.message);
+                showChartError('deptChart','deptChartError','Could not load department data: '+err.message);
+                showChartError('analyticsSeverityChart','analyticsSeverityError','Could not load severity data: '+err.message);
+                showChartError('trendDetailChart','trendDetailError','Could not load trend data: '+err.message);
             });
     }
 
-    // ========== REPORT FUNCTIONS ==========
-    function downloadReport(type) {
-        let url = '/Admin/ExportReport?';
-        if (type === 'weekly') {
-            const end = new Date().toISOString().split('T')[0];
-            const start = new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0];
-            url += `startDate=${start}&endDate=${end}`;
-        } else if (type === 'monthly') {
-            const end = new Date().toISOString().split('T')[0];
-            const start = new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0];
-            url += `startDate=${start}&endDate=${end}`;
-        }
-        window.open(url, '_blank');
+    // ========== REPORTS ==========
+    function toggleDownloadMenu() {
+        const menu = document.getElementById('downloadMenu');
+        menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        // Close when clicking outside
+        setTimeout(() => {
+            window.addEventListener('click', function closeMenu(e) {
+                if (!e.target.closest('.download-dropdown')) {
+                    menu.style.display = 'none';
+                    window.removeEventListener('click', closeMenu);
+                }
+            });
+        }, 10);
     }
 
-    function generateCustomReport() {
+    function downloadQuickReport(type) {
+        let start, end;
+        const today = new Date().toISOString().split('T')[0];
+        if (type === 'today') { start = today; end = today; }
+        else if (type === 'weekly') { end = today; start = new Date(Date.now() - 7*24*60*60*1000).toISOString().split('T')[0]; }
+        else if (type === 'monthly') { end = today; start = new Date(Date.now() - 30*24*60*60*1000).toISOString().split('T')[0]; }
+        window.open(`/Admin/ExportReport?startDate=${start}&endDate=${end}`, '_blank');
+    }
+
+    async function previewCount() {
         const start = document.getElementById('reportStartDate').value;
         const end = document.getElementById('reportEndDate').value;
         const dept = document.getElementById('reportDepartment').value;
         const sev = document.getElementById('reportSeverity').value;
 
-        let url = '/Admin/ExportReport?';
-        if (start) url += `startDate=${start}&`;
-        if (end) url += `endDate=${end}&`;
-        if (dept) url += `department=${encodeURIComponent(dept)}&`;
-        if (sev) url += `severity=${encodeURIComponent(sev)}&`;
-        url = url.slice(0, -1); // remove trailing &
-        window.open(url, '_blank');
+        let url = '/Admin/GetAllIncidentsJson';
+        const params = [];
+        if (start) params.push(`startDate=${start}`);
+        if (end) params.push(`endDate=${end}`);
+        if (dept) params.push(`department=${encodeURIComponent(dept)}`);
+        if (sev) params.push(`severity=${encodeURIComponent(sev)}`);
+        if (params.length > 0) url += '?' + params.join('&');
+
+        try {
+            const res = await fetch(url, { credentials: 'same-origin' });
+            const incidents = await res.json();
+            document.getElementById('previewResult').innerText = `${incidents.length} incidents found.`;
+        } catch (err) {
+            document.getElementById('previewResult').innerText = 'Error fetching count.';
+            console.error(err);
+        }
+    }
+
+    async function downloadCustomReport(format) {
+        const start = document.getElementById('reportStartDate').value;
+        const end = document.getElementById('reportEndDate').value;
+        const dept = document.getElementById('reportDepartment').value;
+        const sev = document.getElementById('reportSeverity').value;
+
+        if (format === 'csv') {
+            let url = '/Admin/ExportReport?';
+            if (start) url += `startDate=${start}&`;
+            if (end) url += `endDate=${end}&`;
+            if (dept) url += `department=${encodeURIComponent(dept)}&`;
+            if (sev) url += `severity=${encodeURIComponent(sev)}&`;
+            url = url.slice(0, -1);
+            window.open(url, '_blank');
+        } else if (format === 'json') {
+            let url = '/Admin/GetAllIncidentsJson';
+            const params = [];
+            if (start) params.push(`startDate=${start}`);
+            if (end) params.push(`endDate=${end}`);
+            if (dept) params.push(`department=${encodeURIComponent(dept)}`);
+            if (sev) params.push(`severity=${encodeURIComponent(sev)}`);
+            if (params.length > 0) url += '?' + params.join('&');
+
+            try {
+                const res = await fetch(url, { credentials: 'same-origin' });
+                const data = await res.json();
+                const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = `Incident_Report_${new Date().toISOString().slice(0,10)}.json`;
+                link.click();
+                URL.revokeObjectURL(link.href);
+            } catch (err) { console.error(err); alert('Error generating JSON report.'); }
+        } else if (format === 'pdf') {
+            let url = '/Admin/ExportPdfReport?';
+            if (start) url += `startDate=${start}&`;
+            if (end) url += `endDate=${end}&`;
+            if (dept) url += `department=${encodeURIComponent(dept)}&`;
+            if (sev) url += `severity=${encodeURIComponent(sev)}&`;
+            url = url.slice(0, -1);
+            window.open(url, '_blank');
+        }
+        // Close download menu after selection
+        document.getElementById('downloadMenu').style.display = 'none';
     }
 
     // ========== INITIALIZATION ==========
